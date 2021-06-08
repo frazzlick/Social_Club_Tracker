@@ -7,12 +7,22 @@
     "dev": "node index_dev.js"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.6",
     "express": "^4.16.4",
+    "express-flash": "0.0.2",
+    "express-session": "^1.17.1",
     "gulp": "^4.0.2",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "method-override": "^3.0.0",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "uglify-js": "^3.13.5"
   }
 }

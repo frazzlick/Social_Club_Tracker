@@ -1,8 +1,80 @@
+*{
+  box-sizing: border-box;
+}
+
 body {
-  padding: 50px;
+  margin: 0;
+  padding: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+/*
+    Color Palette
+*/
+
+:root{
+  --dark-colour: HSL(200, 100%, 50%);
+  --mid-colour: HSL(150, 100%, 71%);
+  --light-colour: HSL(175, 100%, 71%);
+  --lightest-colour: HSL(200, 100%, 71%);
+
+}
+/*
+  Navbar
+*/
+
+.navbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--dark-colour);
+  color: white;
+}
+
+.brand-title{
+  font-size: 1.5rem;
+  margin: .5rem;
+}
+
+.navbar-links ul{
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.navbar-links li{
+  list-style: none;
+}
+
+.navbar-links li a{
+  text-decoration: none;
+  color: white;
+  padding: 1rem;
+  display: block;
+}
+
+.navbar-links li:hover{
+  background-color: var(--lightest-colour);
+  cursor: pointer;
+}
+
+/*
+    Grid Layout
+*/
+
+.grid{
+  display: grid;
+  overflow: hidden;
+}
+
+.grid-sidebar{
+  position: fixed;
+  width: 15%;
+  height: 1000px;
+  overflow: hidden;
+  border-right: 2px solid var(--lightest-colour);
+}
+
+.grid-content{
+  margin-left: 15%;
 }
