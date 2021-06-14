@@ -14,3 +14,11 @@ function createEl(id, text, type, el_class, parent){
 
     return object;
 }
+
+
+//add the parent element and remove all of the children
+function removeElements(element){
+    while (element.firstChild) {
+        element.removeChild(element.lastChild);
+      }
+}

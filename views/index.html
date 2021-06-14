@@ -10,7 +10,7 @@
       href="/images/favicon.ico">
     <title>Social Clubs</title>
 </head>
-<body>
+<body id=body>
     <nav class=navbar>
         <div class="brand-title">Social Clubs</div>
         <div class="navbar-links">
@@ -20,17 +20,26 @@
             </ul>
         </div>
     </nav>
-    <div class=grid>
-        <div class=grid-sidebar>
-            <div class=sidebar-tile><a>Members</a></div>
-            <div class=sidebar-tile><a>Payments</a></div>
-        </div>
-        <div class=grid-content>
-            <div class=content-head>Content head</div>
-            <div class=content-section>Content section</div>
+    <div class=grid-sidebar>
+        <div id=btn-members class=sidebar-tile><a>Members</a></div>
+        <div id=btn-payments class=sidebar-tile><a>Payments</a></div>
+    </div>
+    <div id=grid class=grid>
+        <div id=grid-content class=grid-content>
+            <div id=content-head class=content-head><button class=btn-add>Add +</button></div>
+            <div id=content-section class=content-section>
+                <div class=content-card>Content Card</div>
+                <div class=content-card>Content Card 2</div>
+                <div class=content-card>Content Card 3</div>
+                <div class=content-card>Content Card 4</div>
+                <div class=content-card>Content Card 5</div>
+                <div class=content-card>Content Card 6</div>
+            </div>
         </div>
     </div>
 </body>
 </html>
 
-<script src=></script>
+<script src="jquery/dist/jquery.js"></script>
+<script src=javascripts\createElements.js></script>
+<script src=javascripts\Memberspage.js></script>

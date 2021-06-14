@@ -42,7 +42,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride('_method'));
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 app.get('/', checkAuthenticated, (req, res) => {
     res.render('index.html');
