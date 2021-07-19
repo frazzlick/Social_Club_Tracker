@@ -8,6 +8,7 @@
     <link rel="icon" 
       type="image/png" 
       href="/images/favicon.ico">
+      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
     <title>Social Clubs</title>
 </head>
 <body id=body>
@@ -26,9 +27,15 @@
     </div>
     <div id=grid class=grid>
         <div id=grid-content class=grid-content>
-            <div id=content-head class=content-head><button class=btn-add>Add +</button></div>
+            <div id=content-head class=content-head>
+                <button class=btn-add>Add +</button>
+                <button id='btn-modal' class=btn-add>Modal</button>
+                    </div>
             <div id=content-section class=content-section>
-                <div class=content-card>Content Card</div>
+                <div class=content-card>
+                    <div>Name: Fraser Mackintosh</div>
+                    <span class="glyphicon glyphicon-remove-sign"></span>
+                </div>
                 <div class=content-card>Content Card 2</div>
                 <div class=content-card>Content Card 3</div>
                 <div class=content-card>Content Card 4</div>
@@ -37,9 +44,29 @@
             </div>
         </div>
     </div>
+    <div id='modal' class="modal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <input id=modal-name placeholder="Fraser Mackintosh">
+            </div>
+            <div class="modal-footer">
+              <button id='modal-save' type="button" class="btn-add">Save changes</button>
+              <button type="button" class="btn-add" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>'
 </body>
 </html>
 
 <script src="jquery/dist/jquery.js"></script>
+<script src="javascripts\requests.js"></script>
 <script src=javascripts\createElements.js></script>
 <script src=javascripts\Memberspage.js></script>

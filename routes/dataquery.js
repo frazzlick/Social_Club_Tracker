@@ -2,7 +2,7 @@ const e = require('express');
 
 module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url, bcrypt, users){
     let fs = require('fs');
-    router.get('/members', function(req, res, next){
+    router.get('/api/members', function(req, res, next){
         fs.readFile('server_files/members.json', function(err, data){
             if(err){
                 throw(err);
@@ -12,7 +12,7 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
         })
     })
 
-    router.post('/members', function(req, res, next){
+    router.post('/api/members', function(req, res, next){
         console.log(req.body);
         fs.writeFileSync('server_files/members.json', JSON.stringify(req.body), function(err, data){
 
