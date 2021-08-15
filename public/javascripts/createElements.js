@@ -8,7 +8,7 @@ function createEl(id, text, type, el_class, parent){
         object.innerHTML = text;
     }
     object.id = id;
-    object.classList.add(el_class);
+    object.classList.add(...el_class.split(' '));
     let elparent = document.getElementById(parent);
     elparent.append(object);
 

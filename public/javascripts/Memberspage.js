@@ -1,26 +1,29 @@
 //What to do on load
 
 let data = requestData('/api/members');
+let modal_item;
 
 function intialisepage(){
-    let modal_array = [document.getElementById('btn-modal'), document.getElementById('modal-save')]
-    modal_array.map(item => item.addEventListener('click', function(e){
-        let modal = document.getElementById('modal');
-        hideandshow(modal);
-    }));
+    let modal = document.getElementById('modal');
+    let btn = document.querySelectorAll('.btn-modal').forEach(item => {
+        item.addEventListener('click', function(e){
+            hideandshow(modal);
+        })
+    })
 
     let name;
-    
-    document.getElementById('modal-name').addEventListener('change', function(e){
-        console.log(this.value)
-        name = this.value;
-    })
 
-    document.getElementById('modal-save').addEventListener('click',function(e){
-        data.members[0].first_name = name;
-    })
+    //create the modal event listeners
+    // document.getElementById('modal-name').addEventListener('change', function(e){
+    //     name = this.value;
+    // })
+
+    // document.getElementById('modal-save').addEventListener('click',function(e){
+    //     findMember(name)
+    // })
 }
 
+intialisepage();
 
 
 //Add event listeners to buttons
@@ -37,6 +40,7 @@ sidebar_Payments.addEventListener('click', function(e){
     intialisepage();
 })
 
+createMemberPage();
 
 
 //Create the Page
@@ -58,15 +62,27 @@ function createMemberCard(data)
 {
     //create card
     for(let i = 0; i < data.length; i++){
-        let ci = createEl('card1', '', 'div','content-card', 'content-section')
-        createEl('',data[i].first_name + ' ' + data[i].last_name, 'div','content-card-name','card1');
 
-        let modal = createEl('btn-modal', 'Edit', 'button', 'btn-add', 'content-section')
+        //create the entire card element to content section
+        let card = createEl('card_' + i, '','div','content-card','content-section')
+
+        //create the uesrs name
+        let card_user = createEl('',data[i].first_name, 'div','content-card-name',card.id)
+
+        //add the edit button
+
+        let edit_btn = createEl('btn-modal', 'Edit', 'button', 'btn-modal btn-add', card.id)
+        edit_btn.addEventListener('click', function(e){
+            modal_item = card.id;
+        })
     }
 }
 
 function addMember(){
-    createEl('','','div','content-card','content-section');
+    let sect = createEl(Math.random(),'','div','content-card','content-section');
+    createEl('','','div','content-card-name',sect.id)
+    createEl('','Edit','button','btn-modal btn-add', sect.id)
+    sect.id = ''
 }
 
 
@@ -75,5 +91,14 @@ function hideandshow(object){
         object.style.display = 'none'
     } else{
         object.style.display = 'block'
+    }
+}
+
+function findMember(item_find){
+    console.log(modal_item);
+    for(let i = 0; i < data.members.length; i++){
+        if(item_find = data.members[i]){
+            return data.members[i]
+        }
     }
 }
