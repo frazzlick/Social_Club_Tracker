@@ -8,7 +8,9 @@ function createEl(id, text, type, el_class, parent){
         object.innerHTML = text;
     }
     object.id = id;
-    object.classList.add(...el_class.split(' '));
+    if(el_class != ''){
+        object.classList.add(...el_class.split(' '));
+    }
     let elparent = document.getElementById(parent);
     elparent.append(object);
 
@@ -21,4 +23,17 @@ function removeElements(element){
     while (element.firstChild) {
         element.removeChild(element.lastChild);
       }
+}
+
+function removeDuplicates(items){
+    return [...new Set (items)]
+}
+
+
+function hideandshow(object){
+    if(object.style.display == 'block'){
+        object.style.display = 'none'
+    } else{
+        object.style.display = 'block'
+    }
 }

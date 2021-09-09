@@ -5,29 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel=stylesheet href=/stylesheets/style.css>
+    <!-- <link rel=stylesheet href=//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css> -->
     <link rel="icon" 
       type="image/png" 
       href="/images/favicon.ico">
       <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
-    <title>Social Clubs</title>
+    <title id=title>Social Clubs</title>
 </head>
 <body id=body>
     <nav class=navbar>
-        <div class="brand-title">Social Clubs</div>
+        <div id=brand-title class="brand-title">Social Clubs</div>
         <div class="navbar-links">
             <ul>
-                <li><a>Fraser Mackintosh</a></li>
-                <li><a>Logout</a></li>
+              <span class=cog>&#9881;</span>
+              <li><a>Fraser Mackintosh</a></li>
+              <li><a>Logout</a></li>
             </ul>
         </div>
     </nav>
     <div class=grid-sidebar>
         <div id=btn-members class=sidebar-tile><a>Members</a></div>
         <div id=btn-payments class=sidebar-tile><a>Payments</a></div>
+        <div id=btn-matching class=sidebar-tile><a>Transaction Matching</a></div>
+        <div id=btn-settings class=sidebar-tile><a>Coding</a></div>
     </div>
     <div id=grid class=grid>
     </div>
-
 
 
 
@@ -38,13 +41,12 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Modal title</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+              <h5 class="modal-title">Edit Member</h5>
                 <span aria-hidden="true"></span>
               </button>
             </div>
             <div class="modal-body">
-              <input id=modal-name placeholder="Fraser Mackintosh">
+              <input class=modal-input id=modal-name placeholder="Name">
             </div>
             <div class="modal-footer">
               <button id='modal-save' type="button" class="btn-add btn-modal">Save changes</button>
@@ -57,6 +59,16 @@
 </html>
 
 <script src="jquery/dist/jquery.js"></script>
+<script src=javascripts\functional\tables.js></script>
+<script src=javascripts\functional\grid.js></script>
 <script src="javascripts\requests.js"></script>
 <script src=javascripts\createElements.js></script>
 <script src=javascripts\Memberspage.js></script>
+<script src=javascripts\Transactions.js></script>
+<script src=javascripts\MemberModal.js></script>
+<script src=javascripts\Coding.js></script>
+
+<script src=javascripts\functional\inputpage.js></script>
+<script src=javascripts\TransactionMatching.js></script>
+<script type="text/javascript" src="javascripts\functional\csv2json.js"></script>
+<!-- <script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script> -->

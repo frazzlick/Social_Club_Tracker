@@ -2,7 +2,8 @@ if(process.env.NODE_ENV !== 'production'){
     require('dotenv').config()
 };
 
-const url = '';
+const url = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false'
+
 
 const port = process.env.PORT || 4005;
 
@@ -42,7 +43,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride('_method'));
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}))
 
 app.get('/', checkAuthenticated, (req, res) => {
     res.render('index.html');
@@ -54,7 +57,7 @@ app.get('/register', checkNotAuthenticated, (req, res)=> {
 
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/register'
+    failureRedirect: '/login'
 }));
 
 

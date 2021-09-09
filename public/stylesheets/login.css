@@ -1,0 +1,66 @@
+:root{
+    --dark-colour: HSL(200, 100%, 50%);
+    --mid-colour: HSL(196, 94%, 13%);
+    --light-colour: HSL(212, 72%, 26%);
+    --lightest-colour: HSL(200, 100%, 71%);
+  
+  }   
+
+.split{
+    width: 30%;
+    height: 50%;
+    margin-top: 10%;
+    margin-left: 400px;
+    border:HSL(196, 94%, 13%) 1px solid
+}
+
+.title_block{
+    margin: 20px;
+}
+
+.input_split{
+    background: none;
+    height: 10%;
+    width: 80%;
+    border: none;
+    outline: none;
+}
+
+.input_split:hover{
+    cursor: pointer;
+}
+
+.input_split:focus{
+    border-bottom: 2px solid var(--dark-colour);
+    outline: none;
+}
+
+.login_button{
+    width:60%;
+    border-radius: 20px;
+    height: 40px;
+    background-color: var(--dark-colour);
+    color: white;
+    border: thin 1px var(--dark-colour);
+}
+
+.login_button:hover{
+    cursor: pointer;
+    border: thin 1px black;
+}
+
+.register_button{
+    width:60%;
+    border-radius: 20px;
+    height: 40px;
+    background-color: var(--dark-colour);
+    color: white;
+    border: thin 1px var(--dark-colour);
+}
+
+
+
+.register_button:hover{
+    cursor: pointer;
+    border: thin 1px black;
+}

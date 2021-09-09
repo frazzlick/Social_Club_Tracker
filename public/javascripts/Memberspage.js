@@ -1,47 +1,19 @@
 //What to do on load
 
-let data = requestData('/api/members');
-let modal_item;
+let members = requestData('/api/members');
+let item_id = 0;
+let modal_item = {id: '', member: ''};
 
-function intialisepage(){
-    let modal = document.getElementById('modal');
-    let btn = document.querySelectorAll('.btn-modal').forEach(item => {
-        item.addEventListener('click', function(e){
-            hideandshow(modal);
-        })
-    })
-
-    let name;
-
-    //create the modal event listeners
-    // document.getElementById('modal-name').addEventListener('change', function(e){
-    //     name = this.value;
-    // })
-
-    // document.getElementById('modal-save').addEventListener('click',function(e){
-    //     findMember(name)
-    // })
+window.onload = function loadPage(){
+    //setup the event listeners for the sidebar
+    sidebar_EventListeners()
+    //create the setup for the page
+    createMemberPage()
+    //create the members items with names
+    createMemberCard(members)
+    //setup the modal with event listeners to edit the members
+    createModal()
 }
-
-intialisepage();
-
-
-//Add event listeners to buttons
-let sidebar_Members = document.getElementById('btn-members');
-sidebar_Members.addEventListener('click', function(e){
-    removeElements(document.getElementById('grid'));
-    createMemberPage();
-    intialisepage();
-})
-
-let sidebar_Payments = document.getElementById('btn-payments');
-sidebar_Payments.addEventListener('click', function(e){
-    removeElements(document.getElementById('grid'));
-    intialisepage();
-})
-
-createMemberPage();
-
 
 //Create the Page
 function createMemberPage(){
@@ -54,51 +26,112 @@ function createMemberPage(){
     btn_add.addEventListener('click', function(e){
         addMember();
     })
-
-    createMemberCard(data.members);
+    document.getElementById('brand-title').innerHTML = 'Members'
+    
+    document.getElementById('title').innerHTML = 'Social Clubs | Members'
+    
+    // createModal()
 }
 
-function createMemberCard(data)
+
+
+function createModal(){
+    //for the modal make all the btn-modal buttons hide the modal
+    let btn = document.querySelectorAll('.btn-modal').forEach(item => {
+        hideandshow_EditModal(item)
+    })
+}
+
+function hideandshow_EditModal(item){
+    item.addEventListener('click', function(e){
+        hideandshow(modal);
+    })
+}
+
+
+function createMemberCard(members_card)
 {
     //create card
-    for(let i = 0; i < data.length; i++){
-
+    for(let i = 0; i < members_card.length; i++){
         //create the entire card element to content section
-        let card = createEl('card_' + i, '','div','content-card','content-section')
-
-        //create the uesrs name
-        let card_user = createEl('',data[i].first_name, 'div','content-card-name',card.id)
-
+        let card = createEl(members_card[i].id, '','div','content-card','content-section')
+        //create the users name
+        let card_user = createEl('',members_card[i].name, 'div','content-card-name',card.id)
         //add the edit button
-
-        let edit_btn = createEl('btn-modal', 'Edit', 'button', 'btn-modal btn-add', card.id)
-        edit_btn.addEventListener('click', function(e){
-            modal_item = card.id;
-        })
+        createEditButton(card, members_card[i]);
+        createDeleteButton(card, members_card[i])
     }
+}
+
+function createEditButton(card, index){
+    let edit_btn = createEl('btn-modal', 'Edit', 'button', 'btn-add', card.id)
+    edit_btn.addEventListener('click', function(e){
+        modal_item.id = card.id;
+        modal_item.member = index
+        document.getElementById('modal-name').value = modal_item.member.name
+    })
+    
+    hideandshow_EditModal(edit_btn)
 }
 
 function addMember(){
-    let sect = createEl(Math.random(),'','div','content-card','content-section');
-    createEl('','','div','content-card-name',sect.id)
-    createEl('','Edit','button','btn-modal btn-add', sect.id)
-    sect.id = ''
+    let member = {id: getMaxID(), name: "Name"}
+    members.push(member)
+    createMemberCard([member])
 }
 
-
-function hideandshow(object){
-    if(object.style.display == 'block'){
-        object.style.display = 'none'
-    } else{
-        object.style.display = 'block'
-    }
+function createDeleteButton(card, item_id){
+    let delete_btn = createEl('btn-delete', 'Delete', 'button', 'btn-add', card.id)
+    delete_btn.addEventListener('click', function(e){
+        
+        removeElements(document.getElementById(item_id.id))
+        deleteData('/api/members', item_id)
+    })
 }
 
-function findMember(item_find){
-    console.log(modal_item);
-    for(let i = 0; i < data.members.length; i++){
-        if(item_find = data.members[i]){
-            return data.members[i]
+function sidebar_EventListeners(){
+    //Add event listeners to the sidebar Members button
+    let sidebar_Members = document.getElementById('btn-members');
+    sidebar_Members.addEventListener('click', function(e){
+        removeElements(document.getElementById('grid'));
+        createMemberPage();
+        createMemberCard(members)
+        createModal();
+    })
+
+    //Add event listeners to the sidebar Payments button
+    let sidebar_Payments = document.getElementById('btn-payments');
+    sidebar_Payments.addEventListener('click', function(e){
+        removeElements(document.getElementById('grid'));
+        document.getElementById('brand-title').innerHTML = 'Transactions'
+        document.getElementById('title').innerHTML = 'Social Clubs | Transactions'
+        loadPaymentsScreen();
+    })
+
+    let sidebar_Coding = document.getElementById('btn-settings')
+    sidebar_Coding.addEventListener('click', function(e){
+        removeElements(document.getElementById('grid'));
+        document.getElementById('brand-title').innerHTML = 'Coding'
+        document.getElementById('title').innerHTML = 'Social Clubs | Coding'
+        CodingPageLoad()
+    })
+
+    
+    let sidebar_TransactionMatching = document.getElementById('btn-matching')
+    sidebar_TransactionMatching.addEventListener('click', function(e){
+        removeElements(document.getElementById('grid'));
+        document.getElementById('brand-title').innerHTML = 'Matching'
+        document.getElementById('title').innerHTML = 'Social Clubs | Matching'
+        TransactionMatchingPageLoad()
+    })
+}
+
+function getMaxID(){
+    var id = 0;
+    for(let obj of members){
+        if(obj.id >= id){
+            id = obj.id+1
         }
     }
+    return id
 }

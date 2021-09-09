@@ -1,23 +1,203 @@
 const e = require('express');
+const transactions = require('./processing/transactions.js')
+var MongoClient = require('mongodb').MongoClient;
+var ObjectId = require('mongodb').ObjectId; 
+const fs = require('fs')
+const uuid = require('uuid')
 
 module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url, bcrypt, users){
-    let fs = require('fs');
+    
     router.get('/api/members', function(req, res, next){
-        fs.readFile('server_files/members.json', function(err, data){
-            if(err){
-                throw(err);
-            } else{
-                res.send(JSON.parse(data));
-            }
-        })
+        MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("Social_Clubs_v1");
+            dbo.collection("Members")
+                .find({tenant_id: req.user.tenant_id})
+                .toArray(function(err, result){
+                res.send(result);
+            });
+        });
     })
-
+    
     router.post('/api/members', function(req, res, next){
-        console.log(req.body);
-        fs.writeFileSync('server_files/members.json', JSON.stringify(req.body), function(err, data){
-
-        })
+        MongoClient.connect(url, function(err, db){
+            for(let i = 0; i < req.body.length; i++){
+                var dbo = db.db("Social_Clubs_v1");
+                dbo.collection('Members').updateMany({ '_id' : new ObjectId(req.body[i]._id)},
+                {$set : {tenant_id: req.user.tenant_id, id : req.body[i].id, name : req.body[i].name}},
+                {upsert: true})
+            }
+        });
     })
+
+    router.delete('/api/members',async function(req, res, next){
+        res.end()
+        MongoClient.connect(url, async function(err, db){
+            var dbo = db.db("Social_Clubs_v1");
+                dbo.collection('Members').deleteOne({'_id' : ObjectId(req.body._id)}, true)
+            });
+    })
+
+    router.get('/api/transactions', function(req, res, next){
+        MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("Social_Clubs_v1");
+            dbo.collection("Transactions")
+                .find({tenant_id: req.user.tenant_id},
+                    req.query.find)
+                .limit(Number(req.query.limit))
+                .toArray(function(err, result){
+                res.send(result);
+            });
+        });
+    })
+
+    router.post('/api/transactions', async function(req, res, next){
+        MongoClient.connect(url, function(err, db){
+            for(let i = 0; i < req.body.length; i++){
+                const date_generator = transactions.formatDate(req.body[i].date)
+                var dbo = db.db("Social_Clubs_v1");
+                dbo.collection('Transactions').updateMany({ '_id' : new ObjectId(req.body[i]._id)},
+                {$set : {tenant_id: req.user.tenant_id,
+                    id : req.body[i].id, 
+                    name : req.body[i].name,
+                    date: date_generator.next().value,
+                    month: date_generator.next().value,
+                    year: date_generator.next().value,
+                    monthyear: date_generator.next().value,
+                    transaction_type: req.body[i].transaction_type,
+                    particulars: req.body[i].particulars,
+                    code: req.body[i].code,
+                    reference: req.body[i].reference,
+                    amount: req.body[i].amount,
+                    matched: replaceNull(req.body[i].matched)
+                }},
+                {upsert: true})
+            }
+
+            function replaceNull(data){
+                if(data == null){
+                    return ''
+                }
+                return data
+            }
+        });
+        
+    })
+
+    router.delete('/api/transactions', function(req, res, next){
+        res.end()
+        MongoClient.connect(url, async function(err, db){
+            var dbo = db.db("Social_Clubs_v1");
+            dbo.collection('Transactions').deleteOne({'_id' : ObjectId(req.body._id)}, true)
+        });
+    })
+
+    router.get('/api/coding', function(req, res, next){
+        MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("Social_Clubs_v1");
+            dbo.collection("Coding")
+                .find({tenant_id: req.user.tenant_id})
+                .limit(Number(req.query.limit))
+                .toArray(function(err, result){
+                res.send(result);
+            });
+        });
+    })
+
+    router.post('/api/coding', async function(req, res, next){
+        MongoClient.connect(url, function(err, db){
+            for(let i = 0; i < req.body.length; i++){
+                var dbo = db.db("Social_Clubs_v1");
+                dbo.collection('Coding').updateMany({ '_id' : new ObjectId(req.body[i]._id)},
+                {$set : {tenant_id: req.user.tenant_id,
+                    id : req.body[i].id, 
+                    Description : req.body[i].Description,
+                    Parent: req.body[i].Parent
+                }},
+                {upsert: true})
+            }
+        });
+        
+    })
+
+    router.delete('/api/coding', function(req, res, next){
+        res.end()
+        MongoClient.connect(url, async function(err, db){
+            var dbo = db.db("Social_Clubs_v1");
+            dbo.collection('Coding').deleteOne({'_id' : ObjectId(req.body._id)}, true)
+        });
+    })
+
+    router.get('/api/months', function(req, res, next){
+        MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("Social_Clubs_v1");
+            dbo.collection("Months")
+                .find({})
+                // .limit(Number(req.query.limit))
+                .toArray(function(err, result){
+                res.send(result);
+            });
+        });
+    })
+
+
+
+
+
+    router.post('/register', checkNotAuthenticated, async function(req, res){
+
+        MongoClient.connect(url, async function(err, db){
+            var dbo = db.db('Social_Clubs_v1');
+            dbo.collection('users')
+            .find({'email' : req.body.email})
+            .toArray( async function(err, result){
+                if(result.length == 0){
+                    try{
+                        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+                        MongoClient.connect(url, function(err, db){
+                            var dbo = db.db("Social_Clubs_v1");
+                            dbo.collection("users")
+                            .updateMany({ '_id' : new ObjectId(req.body._id)},
+                            {$set : {name : req.body.name, 
+                                password : hashedPassword, 
+                                email : req.body.email, 
+                                active : true,
+                                tenant_id: uuid.v1()}},
+                            {upsert: true})
+                        res.redirect('/login');
+                        });
+                    } catch{
+                        res.redirect('/register');
+                    }        
+                } else {
+                    res.redirect('/login');
+                }
+        
+            });
+        }); 
+    });
+
+    router.get('/login', checkNotAuthenticated, (req, res) => {
+        MongoClient.connect(url, function(err, db){
+            users.splice(0, users.length)
+            var dbo = db.db("Social_Clubs_v1");
+            dbo.collection("users")
+            .find({})
+            .toArray(function(err, result){
+                if(err){
+                    console.log(err);
+                }
+                for(let i of result){
+                    users.push(i);
+                }
+            });
+            
+        });
+        res.render('login.html');
+    });
 }
 
 
