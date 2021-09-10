@@ -135,3 +135,7 @@ function getMaxID(){
     }
     return id
 }
+
+function settingsButton(){
+    
+}

@@ -61,12 +61,24 @@ body {
 .cog{
   font-size: 30px;
   margin-right: 10px;
+  text-decoration: none;
 }
 
 .cog:hover{
   cursor: pointer;
   font-size: 32px;
 }
+
+.cog:visited{
+  color: inherit;
+}
+.nav-button{
+  width: 100px;
+  text-decoration: none;
+  display: grid;
+  align-items: center;
+}
+
 
 /*
     Grid Layout
