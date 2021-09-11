@@ -8,7 +8,7 @@ function loadPaymentsScreen(){
     loadTransactionData()
 
     let content = createEl('grid-content','','div','grid-content','grid');
-    let content_head = createEl('content-head','','div','transactions-content-head','grid-content');
+    let content_head = createEl('content-head','','div','content-head','grid-content');
     let btn_add = createEl('btn-add','Add +','button','btn-add','content-head');
     let btn_delete = createEl('btn-delete', 'Delete', 'button', 'btn-add', 'content-head')
     deleteButton()

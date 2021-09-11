@@ -64,7 +64,7 @@ function createMemberCard(members_card)
 }
 
 function createEditButton(card, index){
-    let edit_btn = createEl('btn-modal', 'Edit', 'button', 'btn-add', card.id)
+    let edit_btn = createEl('btn-modal', 'Edit', 'button', 'btn-modal', card.id)
     edit_btn.addEventListener('click', function(e){
         modal_item.id = card.id;
         modal_item.member = index
@@ -81,7 +81,7 @@ function addMember(){
 }
 
 function createDeleteButton(card, item_id){
-    let delete_btn = createEl('btn-delete', 'Delete', 'button', 'btn-add', card.id)
+    let delete_btn = createEl('btn-delete', 'Delete', 'button', 'btn-modal', card.id)
     delete_btn.addEventListener('click', function(e){
         
         removeElements(document.getElementById(item_id.id))
