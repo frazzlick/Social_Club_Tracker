@@ -175,7 +175,7 @@ function moreDataButton(){
             { data: 'code' },
             { data: 'reference' },
             { data: 'amount' },
-            {data: 'matched'}
+            { data: 'matched' }
         ]
         DataTable.destroy()
         DataTable.create(transactions, columns, $('#table_id'))

@@ -114,7 +114,8 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
                 {$set : {tenant_id: req.user.tenant_id,
                     id : req.body[i].id, 
                     Description : req.body[i].Description,
-                    Parent: req.body[i].Parent
+                    Parent: req.body[i].Parent,
+                    Active: req.body[i].Active
                 }},
                 {upsert: true})
             }
@@ -180,6 +181,37 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
         }); 
     });
 
+    router.get('/api/settings/users', checkAuthenticated, (req, res) =>
+        MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("Social_Clubs_v1");
+            dbo.collection("users")
+                .find({tenant_id: req.user.tenant_id},{_id: 0})
+                .limit(Number(req.query.limit))
+                .toArray(function(err, result){
+                res.send(result);
+            });
+        })
+    );
+
+    router.post('/api/settings/users', async function(req, res, next){
+        
+        // const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        MongoClient.connect(url, function(err, db){
+            for(let i = 0; i < req.body.length; i++){
+                var dbo = db.db("Social_Clubs_v1");
+                dbo.collection('users').updateMany({ '_id' : new ObjectId(req.body[i]._id)},
+                {$set : {tenant_id: req.user.tenant_id,
+                    name : req.body[i].name,
+                    email: req.body[i].email,
+                    active: req.body[i].active
+                    // password: hashedPassword
+                }},
+                {upsert: true})
+            }
+        });
+    })
+
     router.get('/login', checkNotAuthenticated, (req, res) => {
         MongoClient.connect(url, function(err, db){
             users.splice(0, users.length)
@@ -198,6 +230,7 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
         });
         res.render('login.html');
     });
+
+    router.get('/api/current_user', checkAuthenticated, (req, res) =>
+    res.send(req.user))
 }
-
-

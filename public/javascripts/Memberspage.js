@@ -13,6 +13,11 @@ window.onload = function loadPage(){
     createMemberCard(members)
     //setup the modal with event listeners to edit the members
     createModal()
+
+    //get the current user
+    let user = requestData('/api/current_user')
+
+    document.getElementById('current_user').innerHTML = user.name
 }
 
 //Create the Page
@@ -54,12 +59,14 @@ function createMemberCard(members_card)
     //create card
     for(let i = 0; i < members_card.length; i++){
         //create the entire card element to content section
-        let card = createEl(members_card[i].id, '','div','content-card','content-section')
+        let card = createEl(`${members_card[i].id}`, '','div','content-card','content-section')
         //create the users name
-        let card_user = createEl('',members_card[i].name, 'div','content-card-name',card.id)
-        //add the edit button
+        let card_user = createEl('temp-card-id','', 'div','content-card-name',card.id)
+        let card_name = createEl('',members_card[i].name,'a','',card_user.id)
+        //pass the whole card element and the member item to the edit button and delete button
         createEditButton(card, members_card[i]);
         createDeleteButton(card, members_card[i])
+        card_user.id = ''
     }
 }
 
@@ -81,7 +88,7 @@ function addMember(){
 }
 
 function createDeleteButton(card, item_id){
-    let delete_btn = createEl('btn-delete', 'Delete', 'button', 'btn-add', card.id)
+    let delete_btn = createEl('btn-delete', 'Delete', 'button', 'btn-delete', card.id)
     delete_btn.addEventListener('click', function(e){
         
         removeElements(document.getElementById(item_id.id))
@@ -134,8 +141,4 @@ function getMaxID(){
         }
     }
     return id
-}
-
-function settingsButton(){
-    
 }

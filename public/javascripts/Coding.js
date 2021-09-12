@@ -26,6 +26,7 @@ function CodingPageLoad(){
         createEl('','ID','td','',thead_row.id)
         createEl('','Description','td','',thead_row.id)
         createEl('','Parent','td','',thead_row.id)
+        createEl('','Active','td','',thead_row.id)
         thead_row.id = ''
         loadTable()
     }
@@ -34,7 +35,8 @@ function CodingPageLoad(){
         let columns = [
             { data: 'id',type: 'input' },
             { data: 'Description', type: 'input' },
-            {data: 'Parent', type: 'input'}
+            {data: 'Parent', type: 'input'},
+            {data: 'Active', type: 'input'}
         ]
         DataTable.create(coding, columns, $('#table_id'))
     }

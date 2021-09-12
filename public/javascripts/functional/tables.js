@@ -13,7 +13,7 @@ var DataTable = {
             let html_row = createEl(row._id,'','tr','',tbody.id)
             for(let item of columns){
                 let td = createEl('td','','td','',row._id)
-                let input = createEl(row._id,returnRowData(row, item),DataTable.columnsType(item),'account-card-content',td.id)
+                let input = createEl(row._id,returnRowData(row, item),DataTable.columnsType(item),'',td.id)
                 this.addAttribute(input, item.data)
                 this.dataEventChange(input)
                 td.id = ''
@@ -84,7 +84,7 @@ var DataTable = {
         for(let column of DataTable.columns)
         {
             let td = createEl('td','','td','',row.id)
-            let input = createEl(items._id,items[column.data], DataTable.columnsType(type),'account-card-content',td.id)
+            let input = createEl(items._id,items[column.data], DataTable.columnsType(type),'',td.id)
             this.addAttribute(input, column.data)
             this.dataEventChange(input)
             td.id = ''
