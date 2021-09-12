@@ -119,7 +119,6 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
                 {upsert: true})
             }
         });
-        
     })
 
     router.delete('/api/coding', function(req, res, next){
@@ -143,8 +142,33 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
         });
     })
 
+    router.get('/api/settings/users', function(req, res, next){
+        MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("Social_Clubs_v1");
+            dbo.collection("users")
+                .find({tenant_id: req.user.tenant_id})
+                // .limit(Number(req.query.limit))
+                .toArray(function(err, result){
+                res.send(result);
+            });
+        });
+    })
 
-
+    router.post('/api/settings/users', async function(req, res, next){
+        MongoClient.connect(url, function(err, db){
+            for(let i = 0; i < req.body.length; i++){
+                var dbo = db.db("Social_Clubs_v1");
+                dbo.collection('users').updateMany({ '_id' : new ObjectId(req.body[i]._id)},
+                {$set : {tenant_id: req.user.tenant_id,
+                    name : req.body[i].name, 
+                    email : req.body[i].email,
+                    active: req.body[i].active
+                }},
+                {upsert: true})
+            }
+        });
+    })
 
 
     router.post('/register', checkNotAuthenticated, async function(req, res){
