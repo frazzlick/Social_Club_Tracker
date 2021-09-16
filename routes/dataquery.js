@@ -39,12 +39,12 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
     })
 
     router.get('/api/transactions', function(req, res, next){
+        const query = {...{tenant_id: req.user.tenant_id}, ...req.query.find}
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
             var dbo = db.db("Social_Clubs_v1");
             dbo.collection("Transactions")
-                .find({tenant_id: req.user.tenant_id},
-                    req.query.find)
+                .find(query)
                 .limit(Number(req.query.limit))
                 .toArray(function(err, result){
                 res.send(result);
@@ -222,6 +222,18 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
         });
         res.render('login.html');
     });
+
+    router.post('/api/settings/users/passwordreset', checkAuthenticated, async (req, res) => {
+        console.log(req.body)
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        MongoClient.connect(url, async function(err, db){
+            var dbo = db.db('Social_Clubs_v1');
+            dbo.collection('users')
+            .updateMany({ '_id' : new ObjectId(req.body.data._id)},
+            {$set : {password : hashedPassword}},
+            {upsert: true})
+        })
+    })
 }
 
 

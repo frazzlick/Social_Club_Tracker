@@ -13,7 +13,7 @@ var DataTable = {
             let html_row = createEl(row._id,'','tr','',tbody.id)
             for(let item of columns){
                 let td = createEl('td','','td','',row._id)
-                let input = createEl(row._id,returnRowData(row, item),DataTable.columnsType(item),'account-card-content',td.id)
+                let input = createEl(row._id,returnRowData(row, item),DataTable.columnsType(item),'',td.id)
                 this.addAttribute(input, item.data)
                 this.dataEventChange(input)
                 td.id = ''
@@ -21,11 +21,21 @@ var DataTable = {
             DataTable.row_EventListener_click(html_row)
         }
 
+        columnSort()
+
         function returnRowData(row, columns){
             for(let r in row){
                 if(columns.data == r){
                     return row[r]
                 }
+            }
+        }
+
+        function columnSort()
+        {
+            for(let column of DataTable.columns)
+            {
+                console.log(column)
             }
         }
         
@@ -38,7 +48,17 @@ var DataTable = {
                 a.classList.remove('active-row')
             }
             this.classList.add('active-row')
+            setActiveElement(this)
         })
+
+        function setActiveElement(element)
+        {
+            for(let data of DataTable.data){
+                if(element.id == data._id){
+                    DataTable.active_element = data
+                }
+            }
+        }
     },
 
     //takes a type of html element e.g. input and returns that text as an element otherwise returns an a element
@@ -74,7 +94,7 @@ var DataTable = {
     },
 
     //pushes a new item to the dataset and the table and adds the event listener for changes
-    add: function(items, type)
+    add: function(items)
     {
         items._id = Math.random()
         DataTable.data.push(items)
@@ -84,7 +104,7 @@ var DataTable = {
         for(let column of DataTable.columns)
         {
             let td = createEl('td','','td','',row.id)
-            let input = createEl(items._id,items[column.data], DataTable.columnsType(type),'account-card-content',td.id)
+            let input = createEl(items._id,items[column.data], DataTable.columnsType(column),'',td.id)
             this.addAttribute(input, column.data)
             this.dataEventChange(input)
             td.id = ''

@@ -57,7 +57,7 @@ function createDataTable(){
         let thead_row = thead.insertRow()
         thead_row.id = 2
         createEl('','Date','td','',thead_row.id)
-        createEl('','Transaction type','td','',thead_row.id)
+        createEl('','Transaction Type','td','',thead_row.id)
         createEl('','Particulars','td','',thead_row.id)
         createEl('','Code','td','',thead_row.id)
         createEl('','Reference','td','',thead_row.id)
