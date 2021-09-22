@@ -3,7 +3,7 @@ let data_options = {limit: 50, find: {month: {}}};
 let transactions;
 let months;
 
-function loadPaymentsScreen(){
+window.onload = function loadPaymentsScreen(){
     //setup
     loadTransactionData()
 
@@ -11,6 +11,7 @@ function loadPaymentsScreen(){
     let content_head = createEl('content-head','','div','content-head','grid-content');
     let btn_add = createEl('btn-add','Add +','button','btn-add','content-head');
     let btn_delete = createEl('btn-delete', 'Delete', 'button', 'btn-add', 'content-head')
+    createEl('btn-process-navigate', 'Processing', 'button', 'btn-add', 'content-head')
     deleteButton()
     let content_section = createEl('content-section','','div','content-section','grid-content');
     moreDataButton()
@@ -42,6 +43,24 @@ function loadPaymentsScreen(){
             loadTable()
         })
     })
+
+    openProcessingPage()
+
+    function openProcessingPage(){
+        let processing_button = document.getElementById('btn-process-navigate')
+        processing_button.addEventListener('click', function(e){
+            removeElements(document.getElementById('grid'))
+            ProcessingPageLoad(DataTable.active_element, loadPaymentsScreen)
+        })
+
+        let navbutton = document.getElementById('btn-processing')
+        navbutton.addEventListener('click', function(e){
+            removeElements(document.getElementById('grid'))
+            console.log(DataTable.data[0])
+            ProcessingPageLoad(DataTable.data[0])
+        })
+    }
+
 }
 
 function loadTransactionData()
@@ -53,29 +72,18 @@ function loadTransactionData()
 function createDataTable(){
 
         let table = createEl('table_id', '','table','table_style','content-section')
-        let thead = table.createTHead()
-        let thead_row = thead.insertRow()
-        thead_row.id = 2
-        createEl('','Date','td','',thead_row.id)
-        createEl('','Transaction Type','td','',thead_row.id)
-        createEl('','Particulars','td','',thead_row.id)
-        createEl('','Code','td','',thead_row.id)
-        createEl('','Reference','td','',thead_row.id)
-        createEl('','Amount','td','',thead_row.id)
-        createEl('','Match','td','',thead_row.id)
-        thead_row.id = ''
         loadTable()
 }
 
 function loadTable(){
     let columns = [
-                { data: 'date' },
-                { data: 'transaction_type' },
-                { data: 'particulars' },
-                { data: 'code' },
-                { data: 'reference' },
-                { data: 'amount' },
-                {data: 'matched'}
+                { description: 'Date', data: 'date' },
+                { description: 'Transaction Type', data: 'transaction_type' },
+                { description: 'Particulars', data: 'particulars' },
+                { description: 'Code', data: 'code' },
+                { description: 'Reference', data: 'reference' },
+                { description: 'Amount', data: 'amount' },
+                { description: 'Matched', data: 'matched'}
             ]
     DataTable.create(transactions, columns, $('#table_id'))
 }

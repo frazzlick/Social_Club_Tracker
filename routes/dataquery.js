@@ -24,17 +24,24 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
             for(let i = 0; i < req.body.length; i++){
                 var dbo = db.db("Social_Clubs_v1");
                 dbo.collection('Members').updateMany({ '_id' : new ObjectId(req.body[i]._id)},
-                {$set : {tenant_id: req.user.tenant_id, id : req.body[i].id, name : req.body[i].name}},
+                {$set : {tenant_id: req.user.tenant_id, 
+                    id : req.body[i].id, 
+                    name : req.body[i].name, 
+                    active: returnBoolean(req.body[i].active),
+                    balance: req.body[i].balance}},
                 {upsert: true})
             }
         });
     })
 
     router.delete('/api/members',async function(req, res, next){
+        console.log(req.body)
         res.end()
         MongoClient.connect(url, async function(err, db){
-            var dbo = db.db("Social_Clubs_v1");
-                dbo.collection('Members').deleteOne({'_id' : ObjectId(req.body._id)}, true)
+            for(let i = 0; i < req.body.length; i++){ 
+                var dbo = db.db("Social_Clubs_v1");
+                    dbo.collection('Members').deleteMany({'_id' : ObjectId(req.body[i]._id)}, true)
+                }
             });
     })
 
@@ -45,7 +52,7 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
             var dbo = db.db("Social_Clubs_v1");
             dbo.collection("Transactions")
                 .find(query)
-                .limit(Number(req.query.limit))
+                // .limit(Number(req.query.limit))
                 .toArray(function(err, result){
                 res.send(result);
             });
@@ -59,7 +66,7 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
                 var dbo = db.db("Social_Clubs_v1");
                 dbo.collection('Transactions').updateMany({ '_id' : new ObjectId(req.body[i]._id)},
                 {$set : {tenant_id: req.user.tenant_id,
-                    id : req.body[i].id, 
+                    id : checkid(req.body[i].id), 
                     name : req.body[i].name,
                     date: date_generator.next().value,
                     month: date_generator.next().value,
@@ -73,6 +80,14 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
                     matched: replaceNull(req.body[i].matched)
                 }},
                 {upsert: true})
+            }
+
+            function checkid(id){
+                if(id === undefined){
+                    id = uuid.v1()
+                    return id
+                }
+                return id
             }
 
             function replaceNull(data){
@@ -148,6 +163,7 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
             var dbo = db.db("Social_Clubs_v1");
             dbo.collection("users")
                 .find({tenant_id: req.user.tenant_id})
+                .project({password: 0})
                 // .limit(Number(req.query.limit))
                 .toArray(function(err, result){
                 res.send(result);
@@ -234,6 +250,13 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
             {upsert: true})
         })
     })
+
+    function returnBoolean(boolean){
+        if(boolean === 'true'){
+            return true
+        }
+        return false
+    }
 }
 
 

@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel=stylesheet href=/stylesheets/style.css>
+    <link rel=stylesheet href=stylesheets/style.css>
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="icon" 
       type="image/png" 
       href="/images/favicon.ico">
-    <title id=title>Social Clubs | Settings</title>
+    <title id=title>Social Clubs</title>
 </head>
 <body id=body>
     <nav class=navbar>
-        <div id=brand-title class="brand-title">Settings</div>
+        <div id=brand-title class="brand-title">Social Clubs</div>
         <div class="navbar-links">
             <ul>
               <li><a>Fraser Mackintosh</a></li>
@@ -22,36 +22,30 @@
         </div>
     </nav>
     <div class=sidebar>
-      <div class=logo-content></div>
       <ul class=nav-list>
         <li><a href=index>
           <i href=index class='bx bx-home' ></i>
           <span>Home</span></a></li>
-        <li><a>
+        <li id=btn-members><a>
           <i class='bx bx-face'></i>
-          <span>Banking</span></a></li>
-          <li id=users_button><a>
-            <i  class='bx bx-face'></i>
-            <span>Users</span></a></li>
-          <li id=btn-settings><a>
-            <i class='bx bx-barcode' ></i>
-            <span>Coding</span></a></li>
-        <li><a href=settings>
-          <i  class='bx bx-cog'></i>
-          <span>Settings</span></a></li>
+          <span>Members</span></a></li>
       </ul>
     </div>
-    
     <div id=grid class=grid>
     </div>
 </body>
 </html>
-
 
 <script src="jquery/dist/jquery.js"></script>
 <script src=javascripts\functional\tables.js></script>
 <script src=javascripts\functional\grid.js></script>
 <script src="javascripts\requests.js"></script>
 <script src=javascripts\createElements.js></script>
-<script src=javascripts\settings_page\settings_page.js></script>
-<script src=javascripts\settings_page\users_tab.js></script>
+<script src=javascripts\Memberspage.js></script>
+
+
+<script src=javascripts\functional\inputpage.js></script>
+<script type="text/javascript" src="javascripts\functional\csv2json.js"></script> 
+<script src="https://unpkg.com/boxicons@2.0.9/dist/boxicons.js"></script>
+
+<!-- <script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script> -->

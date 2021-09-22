@@ -9,14 +9,6 @@ function settings_Users()
     function createDataTable(){
 
         let table = createEl('table_id', '','table','table_style','content-section')
-        let thead = table.createTHead()
-        let thead_row = thead.insertRow()
-        thead_row.id = 2
-        createEl('','User','td','',thead_row.id)
-        createEl('','Email','td','',thead_row.id)
-        createEl('','Active','td','',thead_row.id)
-        thead_row.id = ''
-
         loadTable()
     }
 
@@ -25,9 +17,9 @@ function settings_Users()
         let users = users_load()
 
         let columns = [
-            { data: 'name' , type: 'input'},
-            { data: 'email' , type: 'input'},
-            { data: 'active' , type: 'input'}
+            { description: 'User', data: 'name' , type: 'input'},
+            { description: 'Email', data: 'email' , type: 'input'},
+            { description: 'Active', data: 'active' , type: 'input'}
         ]
 
         DataTable.create(users, columns, $('#table_id'))

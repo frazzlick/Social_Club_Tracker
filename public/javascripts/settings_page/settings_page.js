@@ -12,6 +12,14 @@ window.onload = function loadSettingsPage(){
         //create content sections
         createContentSections()
         settings_Users()
+    })    
+
+    let sidebar_Coding = document.getElementById('btn-settings')
+    sidebar_Coding.addEventListener('click', function(e){
+        removeElements(document.getElementById('grid'));
+        document.getElementById('brand-title').innerHTML = 'Coding'
+        document.getElementById('title').innerHTML = 'Social Clubs | Coding'
+        CodingPageLoad()
     })
 
     function createContentSections(){

@@ -1,8 +1,11 @@
 
 var DataTable = {
 
+    // the create function will create the table header, column headers, body and rows
+    //each time we filter or search or collect more data we need to delete the existing table and recreate the new one
     create: function(data, columns, table) {
         //create the body
+        DataTable.destroy()
         let tbody = createEl('tbody','','tbody','',table[0].id)
             
         DataTable.columns = columns
@@ -21,7 +24,7 @@ var DataTable = {
             DataTable.row_EventListener_click(html_row)
         }
 
-        columnSort()
+        createTableHeader()
 
         function returnRowData(row, columns){
             for(let r in row){
@@ -31,11 +34,17 @@ var DataTable = {
             }
         }
 
-        function columnSort()
+        function createTableHeader()
         {
+            //create the table header row
+            createEl('table-head', '','thead','',table[0].id)
+            createEl('table-head-row', '','tr','','table-head')
             for(let column of DataTable.columns)
             {
-                console.log(column)
+                let column_header = createEl('',column.description, 'td','','table-head-row')
+                column_header.addEventListener('click', function(e){
+                    DataTable.sort(column)
+                })
             }
         }
         
@@ -82,15 +91,16 @@ var DataTable = {
             }
         }
 
-        //removes the table element
-        removeElements($('#tbody')[0])
         //creates a new table based on the filter
         this.create(new_data, DataTable.columns, $('#table_id'))
     },
 
     //call Datatable.destroy() to remove the table
     destroy: function(){
-        removeElements($('#tbody')[0])
+        if($('#table_id')[0] != undefined)
+        {
+            removeElements($('#table_id')[0])
+        }
     },
 
     //pushes a new item to the dataset and the table and adds the event listener for changes
@@ -136,6 +146,16 @@ var DataTable = {
 
     addAttribute(html_element, description){
         html_element.setAttribute('data-description', description)
+    },
+
+    sort(prop){
+        DataTable.data.sort(function(a, b){
+            // console.log(prop)
+            console.table(a[prop.data], b[prop.data], a[prop.data] < b[prop.data])
+            return a[prop.data] < b[prop.data]
+        });
+        // console.log(DataTable.data)
+        return DataTable.data;
     }
 
 }
