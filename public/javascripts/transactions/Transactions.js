@@ -3,10 +3,12 @@ let data_options = {limit: 50, find: {month: {}}};
 let transactions;
 let months;
 
+
 window.onload = function loadPaymentsScreen(){
-    //setup
+    //get the transactions data
     loadTransactionData()
 
+    //create the initial grid layout and buttons
     let content = createEl('grid-content','','div','grid-content','grid');
     let content_head = createEl('content-head','','div','content-head','grid-content');
     let btn_add = createEl('btn-add','Add +','button','btn-add','content-head');
@@ -14,7 +16,10 @@ window.onload = function loadPaymentsScreen(){
     createEl('btn-process-navigate', 'Processing', 'button', 'btn-add', 'content-head')
     deleteButton()
     let content_section = createEl('content-section','','div','content-section','grid-content');
+    //create the moredata button to request more data from the server
     moreDataButton()
+
+    //create the month selector by passing the months through. The months come from a request for the months data
     createMonthSelector(months)
 
     createDataTable()

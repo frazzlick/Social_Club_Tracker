@@ -17,7 +17,6 @@ var inputpage = {
         inputpage.goback = goback
 
         function objectComparison(object1, object2){
-            console.log(object1, object2)
             for(let obj of object1){
                 if(obj._id == object2._id){
                     return object1.indexOf(obj)

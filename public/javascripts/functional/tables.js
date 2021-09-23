@@ -8,6 +8,7 @@ var DataTable = {
         DataTable.destroy()
         let tbody = createEl('tbody','','tbody','',table[0].id)
             
+        //add the data passed in to the columns and data objects
         DataTable.columns = columns
         DataTable.data = data
 
@@ -24,6 +25,7 @@ var DataTable = {
             DataTable.row_EventListener_click(html_row)
         }
 
+        //finish by creating the table header
         createTableHeader()
 
         function returnRowData(row, columns){
@@ -50,6 +52,7 @@ var DataTable = {
         
     },
 
+    //for each row check which row has been selected, add a css class and add the item to the active element object
     row_EventListener_click(row){
         row.addEventListener('click', function(e){
             let active_row = document.querySelectorAll('.active-row');
@@ -148,6 +151,8 @@ var DataTable = {
         html_element.setAttribute('data-description', description)
     },
 
+
+    //still in development
     sort(prop){
         DataTable.data.sort(function(a, b){
             // console.log(prop)
