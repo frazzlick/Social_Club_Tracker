@@ -322,8 +322,3 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
         return false
     }
 }
-
-
-    router.get('/api/current_user', checkAuthenticated, (req, res) =>
-    res.send(req.user))
-}

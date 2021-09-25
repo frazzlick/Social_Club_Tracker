@@ -179,6 +179,13 @@ var inputpage = {
         
             }
         }
+
+        function selection_EventChange(new_selector){
+            let selector = document.getElementById('select_data')
+            selector.innerHTML = new_selector
+            return new_selector
+        
+        }
     },
 
     add: (new_data) => {
