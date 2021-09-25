@@ -231,6 +231,39 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
         res.render('login.html');
     });
 
+    router.get('/api/subscriptions', function(req, res, next){
+        MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("Social_Clubs_v1");
+            dbo.collection("Subscriptions")
+                .find({tenant_id: req.user.tenant_id},
+                    req.query.find)
+                .project({tenant_id: 0})
+                .toArray(function(err, result){
+                res.send(result);
+            });
+        });
+    })
+
+    router.post('/api/subscriptions', async function(req, res, next){
+        
+        // const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        MongoClient.connect(url, function(err, db){
+            for(let i = 0; i < req.body.length; i++){
+                var dbo = db.db("Social_Clubs_v1");
+                dbo.collection('Subscriptions').updateMany({ '_id' : new ObjectId(req.body[i]._id)},
+                {$set : {tenant_id: req.user.tenant_id,
+                    id : req.body[i].id,
+                    description: req.body[i].description,
+                    start_date: req.body[i].start_date,
+                    end_date: req.body[i].end_date,
+                    price: req.body[i].price,
+                }},
+                {upsert: true})
+            }
+        });
+    })
+
     router.get('/api/current_user', checkAuthenticated, (req, res) =>
     res.send(req.user))
 }
