@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel=stylesheet href=/stylesheets/style.css>
-    <link rel="icon" type="image/png" href="/images/favicon.ico">
+    <link rel=stylesheet href=stylesheets/style.css>
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" 
+      type="image/png" 
+      href="/images/favicon.ico">
     <title id=title>Social Clubs</title>
 </head>
 <body id=body>
@@ -13,16 +16,29 @@
         <div id=brand-title class="brand-title">Social Clubs</div>
         <div class="navbar-links">
             <ul>
-              <li><a id=current_user>Fraser Mackintosh</a></li>
-              <li><i class='bx bx-exit logout'></i></li>
+              <li><a>Fraser Mackintosh</a></li>
+              <li><a>Logout</a></li>
             </ul>
         </div>
     </nav>
-    <div class=grid-sidebar>
-        <div id=btn-members class=sidebar-tile><a>Members</a></div>
-        <div id=btn-payments class=sidebar-tile><a>Payments</a></div>
-        <div id=btn-matching class=sidebar-tile><a>Transaction Matching</a></div>
-        <div id=btn-settings class=sidebar-tile><a>Coding</a></div>
+    <div class=sidebar>
+      <ul class=nav-list>
+        <li id=btn-index><a href=index>
+          <i href=index class='bx bx-home' ></i>
+          <span>Home</span></a></li>
+        <li id=btn-members><a href=members>
+          <i class='bx bx-face'></i>
+          <span>Members</span></a></li>
+        <li id=btn-payments><a href=transactions>
+          <i class='bx bx-transfer'></i>
+          <span>Transactions</span></a></li>
+          <li id=btn-subscriptions ><a href=subscriptions>
+            <i class='bx bxs-id-card'></i> 
+            <span>Subscriptions</span></a></li>
+        <li><a href=settings>
+          <i  class='bx bx-cog'></i>
+          <span>Settings</span></a></li>
+      </ul>
     </div>
     <div id=grid class=grid>
     </div>
@@ -31,39 +47,19 @@
 
 
 
-    
-    <div id='modal' class="modal">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Edit Member</h5>
-                <span aria-hidden="true"></span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <input class=modal-input id=modal-name placeholder="Name">
-            </div>
-            <div class="modal-footer">
-              <button id='modal-save' type="button" class="btn-add btn-modal">Save changes</button>
-              <button type="button" class="btn-add btn-modal" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
 </body>
 </html>
 
 <script src="jquery/dist/jquery.js"></script>
+
+<script src=javascripts\homepage\index.js></script>
 <script src=javascripts\functional\tables.js></script>
 <script src=javascripts\functional\grid.js></script>
 <script src="javascripts\requests.js"></script>
 <script src=javascripts\createElements.js></script>
-<script src=javascripts\Memberspage.js></script>
-<script src=javascripts\Transactions.js></script>
-<script src=javascripts\MemberModal.js></script>
-<script src=javascripts\Coding.js></script>
+
 
 <script src=javascripts\functional\inputpage.js></script>
-<script src=javascripts\TransactionMatching.js></script>
-<script type="text/javascript" src="javascripts\functional\csv2json.js"></script>
+<script src="https://unpkg.com/boxicons@2.0.9/dist/boxicons.js"></script>
+
 <!-- <script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script> -->

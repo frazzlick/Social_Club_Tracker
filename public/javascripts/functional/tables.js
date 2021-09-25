@@ -1,10 +1,14 @@
 
 var DataTable = {
 
+    // the create function will create the table header, column headers, body and rows
+    //each time we filter or search or collect more data we need to delete the existing table and recreate the new one
     create: function(data, columns, table) {
         //create the body
+        DataTable.destroy()
         let tbody = createEl('tbody','','tbody','',table[0].id)
             
+        //add the data passed in to the columns and data objects
         DataTable.columns = columns
         DataTable.data = data
 
@@ -21,6 +25,9 @@ var DataTable = {
             DataTable.row_EventListener_click(html_row)
         }
 
+        //finish by creating the table header
+        createTableHeader()
+
         function returnRowData(row, columns){
             for(let r in row){
                 if(columns.data == r){
@@ -28,9 +35,24 @@ var DataTable = {
                 }
             }
         }
+
+        function createTableHeader()
+        {
+            //create the table header row
+            createEl('table-head', '','thead','',table[0].id)
+            createEl('table-head-row', '','tr','','table-head')
+            for(let column of DataTable.columns)
+            {
+                let column_header = createEl('',column.description, 'td','','table-head-row')
+                column_header.addEventListener('click', function(e){
+                    DataTable.sort(column)
+                })
+            }
+        }
         
     },
 
+    //for each row check which row has been selected, add a css class and add the item to the active element object
     row_EventListener_click(row){
         row.addEventListener('click', function(e){
             let active_row = document.querySelectorAll('.active-row');
@@ -38,7 +60,17 @@ var DataTable = {
                 a.classList.remove('active-row')
             }
             this.classList.add('active-row')
+            setActiveElement(this)
         })
+
+        function setActiveElement(element)
+        {
+            for(let data of DataTable.data){
+                if(element.id == data._id){
+                    DataTable.active_element = data
+                }
+            }
+        }
     },
 
     //takes a type of html element e.g. input and returns that text as an element otherwise returns an a element
@@ -62,19 +94,20 @@ var DataTable = {
             }
         }
 
-        //removes the table element
-        removeElements($('#tbody')[0])
         //creates a new table based on the filter
         this.create(new_data, DataTable.columns, $('#table_id'))
     },
 
     //call Datatable.destroy() to remove the table
     destroy: function(){
-        removeElements($('#tbody')[0])
+        if($('#table_id')[0] != undefined)
+        {
+            removeElements($('#table_id')[0])
+        }
     },
 
     //pushes a new item to the dataset and the table and adds the event listener for changes
-    add: function(items, type)
+    add: function(items)
     {
         items._id = Math.random()
         DataTable.data.push(items)
@@ -84,7 +117,7 @@ var DataTable = {
         for(let column of DataTable.columns)
         {
             let td = createEl('td','','td','',row.id)
-            let input = createEl(items._id,items[column.data], DataTable.columnsType(type),'',td.id)
+            let input = createEl(items._id,items[column.data], DataTable.columnsType(column),'',td.id)
             this.addAttribute(input, column.data)
             this.dataEventChange(input)
             td.id = ''
@@ -116,6 +149,18 @@ var DataTable = {
 
     addAttribute(html_element, description){
         html_element.setAttribute('data-description', description)
+    },
+
+
+    //still in development
+    sort(prop){
+        DataTable.data.sort(function(a, b){
+            // console.log(prop)
+            console.table(a[prop.data], b[prop.data], a[prop.data] < b[prop.data])
+            return a[prop.data] < b[prop.data]
+        });
+        // console.log(DataTable.data)
+        return DataTable.data;
     }
 
 }
