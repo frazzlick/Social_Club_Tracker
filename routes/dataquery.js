@@ -286,7 +286,6 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
     })
 
     router.post('/api/subscriptions', async function(req, res, next){
-        
         // const hashedPassword = await bcrypt.hash(req.body.password, 10);
         MongoClient.connect(url, function(err, db){
             for(let i = 0; i < req.body.length; i++){
@@ -298,6 +297,7 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
                     start_date: req.body[i].start_date,
                     end_date: req.body[i].end_date,
                     price: req.body[i].price,
+                    members: req.body[i].members
                 }},
                 {upsert: true})
             }
