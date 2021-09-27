@@ -87,13 +87,9 @@ var inputpage = {
         //element is the html element
         function inputType(total_dataset, object_props, element)
         {
-            // console.log(input)
-            if(!object_props.hasOwnProperty('selection'))
+            if(object_props.hasOwnProperty('selection'))
             {
-                //where the input value is not of type selection
-                return createEl('',total_dataset[inputpage.current_item][object_props.data], 'input','inputpage-input',element.id)
-            } else {
-                //
+                //where the input value is selection
                 let selector =  inputpage.createSelectionList(element, object_props.selection.data, total_dataset[inputpage.current_item][object_props.data])
                 document.getElementById('selector_content').addEventListener('click', function(e){
                     let value = document.getElementById('select_data').innerHTML
@@ -108,6 +104,32 @@ var inputpage = {
                     }
                 })
                 return selector
+            } 
+            else if(object_props.hasOwnProperty('date')){
+                let date_element = createEl(object_props.data + 'input',total_dataset[inputpage.current_item][object_props.data], 'input','inputpage-input',element.id)
+
+                const myDatePicker = MCDatepicker.create({ 
+                    el: '#'+date_element.id
+                })
+
+                myDatePicker.onSelect((date, formatedDate) => data_change(formatedDate));
+                // console.log(inputpage.data[inputpage.current_item])
+                function data_change(date)
+                {
+                    for(let obj of inputpage.data){
+                        if(inputpage.data[inputpage.current_item].id == obj.id)
+                        {
+                            obj[object_props.data] = date
+                            dataToSave(obj)
+                        }
+                    }
+                }
+                
+                return date_element
+            }
+            else {
+                //
+                return createEl('',total_dataset[inputpage.current_item][object_props.data], 'input','inputpage-input',element.id)
             }
 
             function dataToSave(data)

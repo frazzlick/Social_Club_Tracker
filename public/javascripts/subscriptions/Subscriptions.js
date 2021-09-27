@@ -86,6 +86,7 @@
             let card_sub = createEl(Math.random(),'', 'div','content-card-name hyperlink',card.id)
             createEl(Math.random(),sub.start_date, 'div','content-card-name',card.id)
             createEl(Math.random(),sub.end_date, 'div','content-card-name',card.id)
+            createEl(Math.random(),sub.price, 'div','content-card-name',card.id)
             let card_a = createEl(sub.id,sub.description,'a','',card_sub.id)
             SubscriptionClick(card_a)
             checkboxEvent(active_checkbox, sub)

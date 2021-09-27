@@ -2,8 +2,8 @@ function SubscriptionsEditor(current_subscription, subscriptionfull_data)
 {
     let headers = [
         {description: 'Description', data: 'description'},
-        {description: 'Start Date', data: 'start_date'},
-        {description: 'End Date', data: 'end_date'},
+        {description: 'Start Date', data: 'start_date', date: { type: 'date'}},
+        {description: 'End Date', data: 'end_date', date: { type: 'date'}},
         {description: 'Price', data: 'price'},
     
     ]
