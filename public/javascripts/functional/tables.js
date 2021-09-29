@@ -40,13 +40,57 @@ var DataTable = {
         {
             //create the table header row
             createEl('table-head', '','thead','',table[0].id)
+            createEl('table-head-draggable', '','tr','','table-head')
             createEl('table-head-row', '','tr','','table-head')
+            
+            createEl('drag_drop', '', 'div', 'dropfilter', 'table-head-draggable')
+            createEl('','Filter','a','','drag_drop')
             for(let column of DataTable.columns)
             {
                 let column_header = createEl('',column.description, 'td','','table-head-row')
                 column_header.addEventListener('click', function(e){
                     DataTable.sort(column)
                 })
+                setcolumnDrag(column_header)
+            }
+
+            function setcolumnDrag(column)
+            {
+                column.draggable = true
+                column.addEventListener('dragstart', function(e){
+                    let c = this;
+                    let target = document.getElementById('drag_drop')
+                    target.addEventListener('dragover', function(e){
+                        e.preventDefault()
+                    })
+                    target.addEventListener('drop', function(e){
+                        removeElements(this)
+                        this.appendChild(c.cloneNode(true))
+                        createDropDownList(c.innerHTML)
+
+                    })   
+                })
+            }
+
+            function createDropDownList(item)
+            {
+                let data_object;
+                let filter_set = []
+                for(let column of DataTable.columns){
+                    if(item == column.description){
+                        data_object = column
+                    }
+                }
+                
+                for(let data of DataTable.data)
+                {
+                    filter_set.push(data[data_object.data])
+                }
+
+                filter_set = removeDuplicates(filter_set)
+                DataTable.createSelectionList(document.getElementById('drag_drop'), filter_set, filter_set[0], data_object.data)
+
+                
             }
         }
         
@@ -83,17 +127,14 @@ var DataTable = {
     },
 
     //takes an item to filter by and the dataset and creates a table based only the dataset that matches that filter
-    filter: function(item_filter, data)
+    filter: function(item_filter, data, filter_column)
     {
         let new_data = []
         for(let row of data){
-            for(let dPoint in row){
-                if(item_filter == row[dPoint]){
-                    new_data.push(row)
-                }
+            if(item_filter == row[filter_column]){
+                new_data.push(row)
             }
         }
-
         //creates a new table based on the filter
         this.create(new_data, DataTable.columns, $('#table_id'))
     },
@@ -161,6 +202,39 @@ var DataTable = {
         });
         // console.log(DataTable.data)
         return DataTable.data;
-    }
+    },
 
+    createSelectionList: (parent_element, options, current_value, filter_column) =>
+    {
+        let selector = createEl('selector_id_custom','','div','inputpage-dropdown-btn',parent_element.id)
+        createEl('select_data_custom',current_value,'a','',selector.id)
+    
+        //create options section
+        let selector_content = createEl('selector_content_custom','','div','dropdown-content',selector.id)
+        createOptions(options, selector_content.id)
+    
+        selector.addEventListener('click', function(e){
+            hideandshow(selector_content)
+        })
+        return selector
+
+        function createOptions(options, parent){
+            for(let opt of options){
+                createEl('',opt,'a','',parent).addEventListener('click', function(e){
+                    return selection_EventChange(this.innerHTML)
+                })
+        
+            }
+        }
+
+        function selection_EventChange(new_selector){
+            let selector = document.getElementById('select_data_custom')
+            selector.innerHTML = new_selector
+            DataTable.destroy()
+            DataTable.filter(new_selector, DataTable.data, filter_column)
+            return new_selector
+        
+        }
+
+    }
 }

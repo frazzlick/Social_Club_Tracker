@@ -38,7 +38,8 @@
             description: 'New Subscription',
             start_date: 'Start Date',
             end_date: 'End Date',
-            price: 'Price'
+            price: 'Price',
+            members: []
         }
         subscriptionpage.current_data.push(new_sub)
         createSubscriptionElement([new_sub])
@@ -70,7 +71,8 @@
         btn_members.addEventListener('click', function(e){
 
             //write a function to pop up a modal which grabs the members and let's you add them to the event
-            console.log(subscriptionpage.active_event)
+            createModal(requestData('/api/members'))
+            hideandshow(document.getElementById('modal'))
         })
     }
 
