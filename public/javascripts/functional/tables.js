@@ -67,6 +67,7 @@ var DataTable = {
                         removeElements(this)
                         this.appendChild(c.cloneNode(true))
                         createDropDownList(c.innerHTML)
+                        console.log(c)
 
                     })   
                 })

@@ -52,6 +52,7 @@
         let content_head = createEl('content-head','','div','content-head','grid-content');
         let btn_add = createEl('btn_add','Add +','button','btn-add','content-head')
         let btn_save = createEl('btn_save','Save','button','btn-add','content-head')
+        let btn_delete = createEl('btn_delete','Delete','button','btn-add','content-head')
         let btn_members = createEl('','Members', 'button', 'btn-add', 'content-head')
         let content_section = createEl('content-section','','div','content-section','grid-content');
 
@@ -63,16 +64,21 @@
 
         function buttonSave(button){
             button.addEventListener('click', function(e){
-                console.log(subscriptionpage.current_data)
                 saveData('/api/subscriptions',subscriptionpage.current_data)
             })
         }
 
+        btn_delete.addEventListener('click', function(e){
+            deleteData('/api/subscriptions', subscriptionpage.active_event)
+        })
+
+        //get the members modal and get the returned data
         btn_members.addEventListener('click', function(e){
 
             //write a function to pop up a modal which grabs the members and let's you add them to the event
-            createModal(requestData('/api/members'))
+            let items = createModal(requestData('/api/members'))
             hideandshow(document.getElementById('modal'))
+            console.log(items)
         })
     }
 

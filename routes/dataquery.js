@@ -303,6 +303,15 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
             }
         });
     })
+
+    router.delete('/api/subscriptions', function(req, res, next){
+        res.end()
+        MongoClient.connect(url, async function(err, db){
+            var dbo = db.db("Social_Clubs_v1");
+            dbo.collection('Subscriptions').deleteOne({'_id' : ObjectId(req.body._id)}, true)
+        });
+    })
+
     router.post('/api/settings/users/passwordreset', checkAuthenticated, async (req, res) => {
         console.log(req.body)
         const hashedPassword = await bcrypt.hash(req.body.password, 10);

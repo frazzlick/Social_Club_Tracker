@@ -329,17 +329,22 @@ body {
 */
 
 .dropfilter{
-  background-color: var(--light-colour);
+  background-color: white;
   border-radius: 4px;
   min-height: 30px;
   min-width: 50px;
   margin: 5px;
-  color: white;
   display: grid;
   align-items: center;
+  border: 1px solid black;
   outline: none;
   padding-left: 4px;
   padding-right: 4px;
+}
+
+.dropfilter td{
+  background-color: #fff;
+  color: black;
 }
 
 .dropbtn {

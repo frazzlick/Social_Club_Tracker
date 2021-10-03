@@ -1,9 +1,10 @@
-function createModal(dataset)
+function createModal(dataset, )
 {
     
     let modal = {
 
         data: dataset,
+        active_items: [],
         
         modalBody: () =>
         {
@@ -40,8 +41,17 @@ function createModal(dataset)
             {
                 let content_element = createEl('',data.name,'div','modal-content','modal_split_1')
                 content_element.addEventListener('click', function(e){
-                    removeElements(this)
-                    createEl('',data.name,'div','modal-content','modal_split_2')
+                    this.remove()
+                    let right_side_element = createEl('',data.name,'div','modal-content','modal_split_2')
+                    right_side_element_onclick(right_side_element)
+                    return modal.active_items.push(data)
+                })
+            }
+
+            function right_side_element_onclick(element){
+                element.addEventListener('click', function(e){
+                    createEl('',this.innerHTML,'div','modal-content','modal_split_1')
+                    this.remove()
                 })
             }
         }
@@ -50,4 +60,5 @@ function createModal(dataset)
     
     modal.modalBody()
     modal.appendMembers()
+    return modal
 }
