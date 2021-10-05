@@ -20,6 +20,7 @@ function ProcessingPageLoad(active_element, match_item, loadPaymentsScreen)
         {description: 'Date', data: 'date'},
         {description: 'Month', data: 'month'},
         {description: 'Match', data: 'matched', selection: {type: 'list', data: list_data}},
+        {description: 'Member Payment', data: 'member', selection: {type: 'list', data: list_data}},
         {description: 'Amount', data: 'amount'}
     ]
 

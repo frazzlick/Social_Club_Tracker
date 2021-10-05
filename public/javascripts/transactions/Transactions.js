@@ -88,6 +88,7 @@ function loadTable(){
                 { description: 'Code', data: 'code' },
                 { description: 'Reference', data: 'reference' },
                 { description: 'Amount', data: 'amount' },
+                { description: 'Member Payment', data: 'member' },
                 { description: 'Matched', data: 'matched'}
             ]
     DataTable.create(transactions, columns, $('#table_id'))

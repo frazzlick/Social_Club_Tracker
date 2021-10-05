@@ -131,7 +131,8 @@ window.onload = function loadPage(){
         let headers = [
             {description: 'Name', data: 'name'},
             {description: 'Active?', data: 'active', selection: {type: 'list', data: [true, false]}},
-            {description: 'Balance', data: 'balance'}
+            {description: 'Balance', data: 'balance'},
+            {description: 'Charges', data: 'charges'}
             // {data: 'matched', selection: {type: 'list', data: coding}},
         ]
     

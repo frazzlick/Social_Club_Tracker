@@ -64,6 +64,7 @@
 
         function buttonSave(button){
             button.addEventListener('click', function(e){
+                subscriptionpage.active_event = modal.active_event
                 saveData('/api/subscriptions',subscriptionpage.current_data)
             })
         }
@@ -76,9 +77,9 @@
         btn_members.addEventListener('click', function(e){
 
             //write a function to pop up a modal which grabs the members and let's you add them to the event
-            let items = createModal(requestData('/api/members'))
+            let modal = createModal(requestData('/api/members'), subscriptionpage.active_event)
             hideandshow(document.getElementById('modal'))
-            console.log(items)
+            // console.log(modal)
         })
     }
 

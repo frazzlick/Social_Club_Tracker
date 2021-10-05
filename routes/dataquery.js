@@ -1,5 +1,6 @@
-const e = require('express');
 const transactions = require('./processing/transactions.js')
+const subs = require('./processing/eventcosts.js')
+
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId; 
 const fs = require('fs')
@@ -28,7 +29,8 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
                     id : req.body[i].id, 
                     name : req.body[i].name, 
                     active: returnBoolean(req.body[i].active),
-                    balance: req.body[i].balance}},
+                    balance: req.body[i].balance,
+                    charges: parseFloat(req.body[i].charges).toFixed(2)}},
                 {upsert: true})
             }
         });
@@ -77,7 +79,8 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
                     code: req.body[i].code,
                     reference: req.body[i].reference,
                     amount: req.body[i].amount,
-                    matched: replaceNull(req.body[i].matched)
+                    matched: replaceNull(req.body[i].matched),
+                    member: req.body[i].member
                 }},
                 {upsert: true})
             }
@@ -297,11 +300,21 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
                     start_date: req.body[i].start_date,
                     end_date: req.body[i].end_date,
                     price: req.body[i].price,
-                    members: req.body[i].members
+                    members: membersArray(req.body[i].members)
                 }},
                 {upsert: true})
             }
         });
+
+        subs.processSubs(url, req.user)
+
+        function membersArray(members)
+        {
+            if(!Array.isArray(members)){
+                return []
+            }
+            return members
+        }
     })
 
     router.delete('/api/subscriptions', function(req, res, next){
