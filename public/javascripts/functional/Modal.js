@@ -57,7 +57,6 @@ function createModal(dataset, active_event)
                     }
                 }
             }
-            console.log(modal)
 
             for(let data of modal.data)
             {

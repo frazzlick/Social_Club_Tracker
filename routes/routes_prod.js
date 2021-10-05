@@ -92,5 +92,17 @@ app.listen(port);
 require('./webpages')(app, checkAuthenticated);
 require('./dataquery')(app, checkAuthenticated, checkNotAuthenticated, url, bcrypt, users);
 
+//membersapi
+require('./api/membersapi')(app, url);
+
+//coding api
+require('./api/codingapi')(app, url);
+
+//subs api
+require('./api/subsapi')(app, url);
+
+//transactions api
+require('./api/transactionsapi')(app, url);
+
 
 module.exports = app;

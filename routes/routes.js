@@ -24,8 +24,8 @@ const initalisePassport = require('./login/passport-config');
 const { minify } = require('uglify-js');
 initalisePassport(
     passport, 
-    email => users.find(user => user.email === email),
-    _id => users.find(user => user._id == _id)
+    email => users.find(user => user.email === 'frasermackintosh1@gmail.com'),
+    _id => users.find(user => user._id == "613963c06ef62f6787d0066c")
 );
 
 let users = [];
@@ -47,7 +47,7 @@ app.use(methodOverride('_method'));
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb'}))
 
-app.get('/', checkAuthenticated, (req, res) => {
+app.get('/', (req, res) => {
     res.render('index.html');
 });
 
@@ -74,6 +74,7 @@ function checkAuthenticated(req, res, next){
 }
 
 function checkNotAuthenticated(req, res, next){
+    
     if(req.isAuthenticated()){
         return res.redirect('/')
     }
@@ -89,8 +90,22 @@ function devAuthenticated(req, res, next)
 app.listen(port);
 
 
+
+
 require('./webpages')(app, devAuthenticated);
 require('./dataquery')(app, devAuthenticated, checkNotAuthenticated, url, bcrypt, users);
+
+//membersapi
+require('./api/membersapi')(app, url);
+
+//coding api
+require('./api/codingapi')(app, url);
+
+//subs api
+require('./api/subsapi')(app, url);
+
+//transactions api
+require('./api/transactionsapi')(app, url);
 
 
 module.exports = app;

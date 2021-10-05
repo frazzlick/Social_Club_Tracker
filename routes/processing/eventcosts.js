@@ -25,6 +25,7 @@ module.exports = {
             let members = values[1].value
             for(let member of members)
             {
+                //each time, let's set the members charges to 0
                 member.charges = 0
                 
                 for(let sub of subs)

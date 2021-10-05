@@ -1,4 +1,3 @@
-const transactions = require('./processing/transactions.js')
 const subs = require('./processing/eventcosts.js')
 
 var MongoClient = require('mongodb').MongoClient;
@@ -7,146 +6,6 @@ const fs = require('fs')
 const uuid = require('uuid')
 
 module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url, bcrypt, users){
-    
-    router.get('/api/members', function(req, res, next){
-        MongoClient.connect(url, function(err, db) {
-            if (err) throw err;
-            var dbo = db.db("Social_Clubs_v1");
-            dbo.collection("Members")
-                .find({tenant_id: req.user.tenant_id})
-                .toArray(function(err, result){
-                res.send(result);
-            });
-        });
-    })
-    
-    router.post('/api/members', function(req, res, next){
-        MongoClient.connect(url, function(err, db){
-            for(let i = 0; i < req.body.length; i++){
-                var dbo = db.db("Social_Clubs_v1");
-                dbo.collection('Members').updateMany({ '_id' : new ObjectId(req.body[i]._id)},
-                {$set : {tenant_id: req.user.tenant_id, 
-                    id : req.body[i].id, 
-                    name : req.body[i].name, 
-                    active: returnBoolean(req.body[i].active),
-                    balance: req.body[i].balance,
-                    charges: parseFloat(req.body[i].charges).toFixed(2)}},
-                {upsert: true})
-            }
-        });
-    })
-
-    router.delete('/api/members',async function(req, res, next){
-        console.log(req.body)
-        res.end()
-        MongoClient.connect(url, async function(err, db){
-            for(let i = 0; i < req.body.length; i++){ 
-                var dbo = db.db("Social_Clubs_v1");
-                    dbo.collection('Members').deleteMany({'_id' : ObjectId(req.body[i]._id)}, true)
-                }
-            });
-    })
-
-    router.get('/api/transactions', function(req, res, next){
-        const query = {...{tenant_id: req.user.tenant_id}, ...req.query.find}
-        MongoClient.connect(url, function(err, db) {
-            if (err) throw err;
-            var dbo = db.db("Social_Clubs_v1");
-            dbo.collection("Transactions")
-                .find(query)
-                // .limit(Number(req.query.limit))
-                .toArray(function(err, result){
-                res.send(result);
-            });
-        });
-    })
-
-    router.post('/api/transactions', async function(req, res, next){
-        MongoClient.connect(url, function(err, db){
-            for(let i = 0; i < req.body.length; i++){
-                const date_generator = transactions.formatDate(req.body[i].date)
-                var dbo = db.db("Social_Clubs_v1");
-                dbo.collection('Transactions').updateMany({ '_id' : new ObjectId(req.body[i]._id)},
-                {$set : {tenant_id: req.user.tenant_id,
-                    id : checkid(req.body[i].id), 
-                    name : req.body[i].name,
-                    date: date_generator.next().value,
-                    month: date_generator.next().value,
-                    year: date_generator.next().value,
-                    monthyear: date_generator.next().value,
-                    transaction_type: req.body[i].transaction_type,
-                    particulars: req.body[i].particulars,
-                    code: req.body[i].code,
-                    reference: req.body[i].reference,
-                    amount: req.body[i].amount,
-                    matched: replaceNull(req.body[i].matched),
-                    member: req.body[i].member
-                }},
-                {upsert: true})
-            }
-
-            function checkid(id){
-                if(id === undefined){
-                    id = uuid.v1()
-                    return id
-                }
-                return id
-            }
-
-            function replaceNull(data){
-                if(data == null){
-                    return ''
-                }
-                return data
-            }
-        });
-        
-    })
-
-    router.delete('/api/transactions', function(req, res, next){
-        res.end()
-        MongoClient.connect(url, async function(err, db){
-            var dbo = db.db("Social_Clubs_v1");
-            dbo.collection('Transactions').deleteOne({'_id' : ObjectId(req.body._id)}, true)
-        });
-    })
-
-    router.get('/api/coding', function(req, res, next){
-        MongoClient.connect(url, function(err, db) {
-            if (err) throw err;
-            var dbo = db.db("Social_Clubs_v1");
-            dbo.collection("Coding")
-                .find({tenant_id: req.user.tenant_id})
-                .limit(Number(req.query.limit))
-                .toArray(function(err, result){
-                res.send(result);
-            });
-        });
-    })
-
-    router.post('/api/coding', async function(req, res, next){
-        MongoClient.connect(url, function(err, db){
-            for(let i = 0; i < req.body.length; i++){
-                var dbo = db.db("Social_Clubs_v1");
-                dbo.collection('Coding').updateMany({ '_id' : new ObjectId(req.body[i]._id)},
-                {$set : {tenant_id: req.user.tenant_id,
-                    id : req.body[i].id, 
-                    Description : req.body[i].Description,
-                    Parent: req.body[i].Parent,
-                    Active: req.body[i].Active
-                }},
-                {upsert: true})
-            }
-        });
-    })
-
-    router.delete('/api/coding', function(req, res, next){
-        res.end()
-        MongoClient.connect(url, async function(err, db){
-            var dbo = db.db("Social_Clubs_v1");
-            dbo.collection('Coding').deleteOne({'_id' : ObjectId(req.body._id)}, true)
-        });
-    })
 
     router.get('/api/months', function(req, res, next){
         MongoClient.connect(url, function(err, db) {
@@ -274,56 +133,6 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
         res.render('login.html');
     });
 
-    router.get('/api/subscriptions', function(req, res, next){
-        MongoClient.connect(url, function(err, db) {
-            if (err) throw err;
-            var dbo = db.db("Social_Clubs_v1");
-            dbo.collection("Subscriptions")
-                .find({tenant_id: req.user.tenant_id},
-                    req.query.find)
-                .project({tenant_id: 0})
-                .toArray(function(err, result){
-                res.send(result);
-            });
-        });
-    })
-
-    router.post('/api/subscriptions', async function(req, res, next){
-        // const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        MongoClient.connect(url, function(err, db){
-            for(let i = 0; i < req.body.length; i++){
-                var dbo = db.db("Social_Clubs_v1");
-                dbo.collection('Subscriptions').updateMany({ '_id' : new ObjectId(req.body[i]._id)},
-                {$set : {tenant_id: req.user.tenant_id,
-                    id : req.body[i].id,
-                    description: req.body[i].description,
-                    start_date: req.body[i].start_date,
-                    end_date: req.body[i].end_date,
-                    price: req.body[i].price,
-                    members: membersArray(req.body[i].members)
-                }},
-                {upsert: true})
-            }
-        });
-
-        subs.processSubs(url, req.user)
-
-        function membersArray(members)
-        {
-            if(!Array.isArray(members)){
-                return []
-            }
-            return members
-        }
-    })
-
-    router.delete('/api/subscriptions', function(req, res, next){
-        res.end()
-        MongoClient.connect(url, async function(err, db){
-            var dbo = db.db("Social_Clubs_v1");
-            dbo.collection('Subscriptions').deleteOne({'_id' : ObjectId(req.body._id)}, true)
-        });
-    })
 
     router.post('/api/settings/users/passwordreset', checkAuthenticated, async (req, res) => {
         console.log(req.body)
@@ -337,10 +146,4 @@ module.exports = function(router, checkAuthenticated, checkNotAuthenticated, url
         })
     })
 
-    function returnBoolean(boolean){
-        if(boolean === 'true'){
-            return true
-        }
-        return false
-    }
 }
