@@ -2,9 +2,9 @@
 
 
 window.onload = function loadPage(){
-
     
     let members = requestData('/api/members');
+    document.getElementById('user-tag').innerHTML = requestData('/api/current_user').name
     let active_page = 'grid'
     let current_member;
     let active_members = [];

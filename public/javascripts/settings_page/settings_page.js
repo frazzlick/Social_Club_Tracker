@@ -22,6 +22,14 @@ window.onload = function loadSettingsPage(){
         CodingPageLoad()
     })
 
+    let sidebar_Banking = document.getElementById('btn-banking')
+    sidebar_Banking.addEventListener('click', function(e){
+        removeElements(document.getElementById('grid'));
+        document.getElementById('brand-title').innerHTML = 'Banking'
+        document.getElementById('title').innerHTML = 'Social Clubs | Banking'
+        BankingPageLoad()
+    })
+
     function createContentSections(){
 
         let content = createEl('grid-content','','div','grid-content','grid');

@@ -1,6 +1,8 @@
 function CodingPageLoad(){
     let coding = requestData('/api/coding', {limit: 50})
     createCodingPage()
+    document.getElementById('user-tag').innerHTML = requestData('/api/current_user').name
+
 
     
     function createCodingPage(){

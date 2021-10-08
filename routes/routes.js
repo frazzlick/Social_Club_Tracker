@@ -24,8 +24,8 @@ const initalisePassport = require('./login/passport-config');
 const { minify } = require('uglify-js');
 initalisePassport(
     passport, 
-    email => users.find(user => user.email === 'frasermackintosh1@gmail.com'),
-    _id => users.find(user => user._id == "613963c06ef62f6787d0066c")
+    email => users.find(user => user.email === email),
+    _id => users.find(user => user._id == _id)
 );
 
 let users = [];
@@ -106,6 +106,9 @@ require('./api/subsapi')(app, url);
 
 //transactions api
 require('./api/transactionsapi')(app, url);
+
+
+require('./api/current_user')(app);
 
 
 module.exports = app;

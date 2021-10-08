@@ -1,4 +1,3 @@
-const subs = require('./processing/eventcosts.js')
 
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId; 

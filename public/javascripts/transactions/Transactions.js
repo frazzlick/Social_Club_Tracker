@@ -5,6 +5,8 @@ let months;
 
 
 window.onload = function loadPaymentsScreen(){
+    document.getElementById('user-tag').innerHTML = requestData('/api/current_user').name
+
     //get the transactions data
     loadTransactionData()
 

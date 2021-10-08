@@ -6,6 +6,7 @@
     //When we click on the event or subscription we should be able to display who is attending and be able to edit the event
     //When then want to be able to edit the members with who is going. Ideally a modal which you click and add to the right side
 
+    document.getElementById('user-tag').innerHTML = requestData('/api/current_user').name
 
     let subscriptionpage = {
         //initial data is only used to

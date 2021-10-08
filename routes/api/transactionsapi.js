@@ -1,6 +1,6 @@
 
 
-const transactions = require('./processing/transactions.js')
+const transactions = require('../processing/transactions.js')
 
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId; 
