@@ -1,16 +1,10 @@
 function BankingPageLoad()
 {
-    let element = returnDiv()
+    // let element = returnDiv()
+    let element = 2
     console.log(element)
-    document.getElementById('body').appendChild(element)
-}
 
-function returnDiv(){
-    return 
-        (
-        <div>
-            Hello there
-        </div>
-        )
-    
+    //what do we want the banking page to look like?
+
+    //Bank Account set up. Balance by month and reconciliations?
 }

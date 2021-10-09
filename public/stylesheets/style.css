@@ -132,6 +132,8 @@ body {
 {
     display: grid;
     align-items: center;
+    width: 50px;
+    left: 70%;
 }
 
 .sidebar ul{
@@ -171,6 +173,19 @@ body {
   text-align: center;
 }
 
+.sidebar-active{
+  width: 75px;
+  transition: all 0.5s ease-in-out;
+
+}
+
+.sidebar-active span{
+  color: transparent;
+}
+
+.sidebar-active #btn-burger{
+  left: 5%;
+}
 
 
 /*

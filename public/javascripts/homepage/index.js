@@ -22,4 +22,11 @@ window.onload = function indexpageLoad(){
             loadPaymentsScreen();
         })
     }
+
+    let burger_button = document.getElementById('btn-burger')
+    burger_button.addEventListener('click', function(e){
+        // console.log(document.querySelector)
+        document.querySelector('.sidebar').classList.toggle('sidebar-active')
+        window.localStorage.setItem('sidebar', 'active')
+    })
 }
