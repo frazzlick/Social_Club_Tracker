@@ -79,7 +79,9 @@
 
             //write a function to pop up a modal which grabs the members and let's you add them to the event
             let modal = createModal(requestData('/api/members'), subscriptionpage.active_event)
-            hideandshow(document.getElementById('modal'))
+            if(subscriptionpage.active_event.length != 0){
+                hideandshow(document.getElementById('modal'))
+            }
             // console.log(modal)
         })
     }
@@ -127,6 +129,7 @@
             checkbox.addEventListener('change', function(e){
                 
                 if(this.checked == false){
+                    subscriptionpage.active_event = []
                     return subscriptionpage.current_data.splice(subscriptionpage.current_data.indexOf(event))
                 }
 

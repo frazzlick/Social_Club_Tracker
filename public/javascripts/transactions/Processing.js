@@ -4,6 +4,7 @@ function ProcessingPageLoad(active_element, match_item, loadPaymentsScreen)
         match_item = {matched: ''}
     }
     let coding = requestData('/api/coding', {limit: 50})
+    let members = requestData('/api/members')
 
     createLayout()
 
@@ -13,6 +14,11 @@ function ProcessingPageLoad(active_element, match_item, loadPaymentsScreen)
         list_data.push(code.Description)
     }
 
+    let member_data = []
+    for(let member of members){
+        member_data.push(member.name)
+    }
+
     let headers = [
         {description: 'Particulars', data: 'particulars'},
         {description: 'Code', data: 'code'},
@@ -20,7 +26,7 @@ function ProcessingPageLoad(active_element, match_item, loadPaymentsScreen)
         {description: 'Date', data: 'date'},
         {description: 'Month', data: 'month'},
         {description: 'Match', data: 'matched', selection: {type: 'list', data: list_data}},
-        {description: 'Member Payment', data: 'member', selection: {type: 'list', data: list_data}},
+        {description: 'Member Payment', data: 'member', selection: {type: 'list', data: member_data}},
         {description: 'Amount', data: 'amount'}
     ]
 

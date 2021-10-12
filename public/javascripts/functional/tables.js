@@ -1,40 +1,25 @@
 
 var DataTable = {
 
+    rowlimit: 10,
+    // filter_item: '',
+    filter_dataset: [],
+
     // the create function will create the table header, column headers, body and rows
     //each time we filter or search or collect more data we need to delete the existing table and recreate the new one
     create: function(data, columns, table) {
         //create the body
         DataTable.destroy()
-        let tbody = createEl('tbody','','tbody','',table[0].id)
             
         //add the data passed in to the columns and data objects
+        DataTable.table = table
         DataTable.columns = columns
         DataTable.data = data
+        DataTable.filter_dataset = data
 
-        // create the rows
-        for(let row of data){
-            let html_row = createEl(row._id,'','tr','',tbody.id)
-            for(let item of columns){
-                let td = createEl('td','','td','',row._id)
-                let input = createEl(row._id,returnRowData(row, item),DataTable.columnsType(item),'',td.id)
-                this.addAttribute(input, item.data)
-                this.dataEventChange(input)
-                td.id = ''
-            }
-            DataTable.row_EventListener_click(html_row)
-        }
-
-        //finish by creating the table header
         createTableHeader()
-
-        function returnRowData(row, columns){
-            for(let r in row){
-                if(columns.data == r){
-                    return row[r]
-                }
-            }
-        }
+        // create the rows
+        
 
         function createTableHeader()
         {
@@ -67,7 +52,6 @@ var DataTable = {
                         removeElements(this)
                         this.appendChild(c.cloneNode(true))
                         createDropDownList(c.innerHTML)
-                        console.log(c)
 
                     })   
                 })
@@ -94,7 +78,56 @@ var DataTable = {
                 
             }
         }
+        this.draw(data, columns, table)
         
+    },
+
+    draw: function(data, columns, table){
+        
+        createTableFooter()
+        let tbody = createEl('tbody','','tbody','',table[0].id)
+        for(let row of data){
+            let html_row = createEl(row._id,'','tr','',tbody.id)
+            for(let item of columns){
+                let td = createEl('td','','td','',row._id)
+                let input = createEl(row._id,returnRowData(row, item),DataTable.columnsType(item),'',td.id)
+                this.addAttribute(input, item.data)
+                this.dataEventChange(input)
+                td.id = ''
+            }
+            DataTable.row_EventListener_click(html_row)
+            if(data.indexOf(row) >= this.rowlimit){
+                return
+            }
+        }
+
+        //finish by creating the table header
+
+        function returnRowData(row, columns){
+            for(let r in row){
+                if(columns.data == r){
+                    return row[r]
+                }
+            }
+        }
+
+
+        //create the Table Footer and when the input changes for the limit, redraw the table
+        function createTableFooter()
+        {
+            let number_out_of = DataTable.rowlimit
+            if(DataTable.filter_dataset.length < DataTable.rowlimit){
+                number_out_of = DataTable.filter_dataset.length
+            }
+            createEl('table_footer', '','div','table-footer','content-section')
+            let limit = createEl('',DataTable.rowlimit,'input','table-footer-btn','table_footer')
+            createEl('table-footer-pagination',`${number_out_of} out of ${DataTable.filter_dataset.length}`, 'div','table-footer-pagination','table_footer')
+            limit.addEventListener('change', function(e){
+                DataTable.rowlimit = this.value
+                DataTable.destroy()
+                DataTable.draw(DataTable.data, DataTable.columns, DataTable.table)
+            })
+        }
     },
 
     //for each row check which row has been selected, add a css class and add the item to the active element object
@@ -137,14 +170,16 @@ var DataTable = {
             }
         }
         //creates a new table based on the filter
-        this.create(new_data, DataTable.columns, $('#table_id'))
+        DataTable.filter_dataset = new_data
+        this.draw(new_data, DataTable.columns, $('#table_id'))
     },
 
     //call Datatable.destroy() to remove the table
     destroy: function(){
-        if($('#table_id')[0] != undefined)
+        if($('#tbody')[0] != undefined)
         {
-            removeElements($('#table_id')[0])
+            removeElements($('#tbody')[0])
+            removeElements($('#table_footer')[0])
         }
     },
 

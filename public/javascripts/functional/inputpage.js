@@ -90,9 +90,10 @@ var inputpage = {
             if(object_props.hasOwnProperty('selection'))
             {
                 //where the input value is selection
-                let selector =  inputpage.createSelectionList(element, object_props.selection.data, total_dataset[inputpage.current_item][object_props.data])
-                document.getElementById('selector_content').addEventListener('click', function(e){
-                    let value = document.getElementById('select_data').innerHTML
+                let selector = createSelectionList(element, object_props.selection.data, total_dataset[inputpage.current_item][object_props.data])
+                selector.addEventListener('click', function(e){
+                    let value = document.getElementById(`select_data_${element.id}`).innerHTML
+                    // parent_element, options, current_value
                     let current_data = total_dataset[inputpage.current_item]
                     for(let obj of inputpage.data){
                         //update the current value and push the obj to the datasave function
@@ -143,6 +144,37 @@ var inputpage = {
                 }
                 return inputpage.data_to_save.push(data)
             }
+
+            function createSelectionList(parent_element, options, current_value)
+            {
+                let selector = createEl(Math.random(),'','div','inputpage-dropdown-btn',parent_element.id)
+                let select_data = createEl(`select_data_${parent_element.id}`,current_value,'a','',selector.id)
+            
+                //create options section
+                let selector_content = createEl(Math.random(),'','div','dropdown-content',selector.id)
+                createOptions(options, selector_content.id)
+            
+                selector.addEventListener('click', function(e){
+                    hideandshow(selector_content)
+                })
+                return selector
+        
+                function createOptions(options, parent){
+                    for(let opt of options){
+                        createEl('',opt,'a','',parent).addEventListener('click', function(e){
+                            return selection_EventChange(this.innerHTML, select_data)
+                        })
+                
+                    }
+                }
+        
+                function selection_EventChange(new_selector, select_data){
+                    let selector = document.getElementById(select_data.id)
+                    selector.innerHTML = new_selector
+                    return new_selector
+                
+                }
+            }
         }
     },
 
@@ -175,38 +207,6 @@ var inputpage = {
                 }
             }
             return inputpage.data_to_save.push(data)
-        }
-    },
-
-    //create the selection list by inputting the parent element and the options to generate the list
-    createSelectionList: (parent_element, options, current_value) =>
-    {
-        let selector = createEl('selector_id','','div','inputpage-dropdown-btn',parent_element.id)
-        createEl('select_data',current_value,'a','',selector.id)
-    
-        //create options section
-        let selector_content = createEl('selector_content','','div','dropdown-content',selector.id)
-        createOptions(options, selector_content.id)
-    
-        selector.addEventListener('click', function(e){
-            hideandshow(selector_content)
-        })
-        return selector
-
-        function createOptions(options, parent){
-            for(let opt of options){
-                createEl('',opt,'a','',parent).addEventListener('click', function(e){
-                    return selection_EventChange(this.innerHTML)
-                })
-        
-            }
-        }
-
-        function selection_EventChange(new_selector){
-            let selector = document.getElementById('select_data')
-            selector.innerHTML = new_selector
-            return new_selector
-        
         }
     },
 

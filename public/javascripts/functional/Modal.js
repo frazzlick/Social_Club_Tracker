@@ -47,6 +47,9 @@ function createModal(dataset, active_event)
 
         appendMembers()
         {
+            if(modal.active_event.length == 0){
+                return alert('Please select a subscription')
+            }
             for(let member of modal.active_event.members)
             {
                 for( var i = 0; i < modal.data.length; i++){ 

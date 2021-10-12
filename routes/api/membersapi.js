@@ -7,7 +7,6 @@ const uuid = require('uuid')
 module.exports = function(router, url){
     
     router.get('/api/members', function(req, res, next){
-        console.log(req.user)
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
             var dbo = db.db("Social_Clubs_v1");
@@ -29,7 +28,10 @@ module.exports = function(router, url){
                     name : req.body[i].name, 
                     active: returnBoolean(req.body[i].active),
                     balance: req.body[i].balance,
-                    charges: parseFloat(req.body[i].charges).toFixed(2)}},
+                    charges: parseFloat(req.body[i].charges).toFixed(2),
+                    start_date: req.body[i].start_date,
+                    end_date: req.body[i].end_date
+                }},
                 {upsert: true})
             }
         });
@@ -51,7 +53,7 @@ module.exports = function(router, url){
 
 
 function returnBoolean(boolean){
-    if(boolean === 'true'){
+    if(boolean == 'true'){
         return true
     }
     return false

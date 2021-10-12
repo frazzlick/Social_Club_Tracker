@@ -82,7 +82,7 @@ window.onload = function loadPage(){
     }
 
     function addMember(){
-        let member = {id: getMaxID(), name: "Name", active: true, balance: 0}
+        let member = {id: getMaxID(), name: "Name", active: true, balance: 0, charges: 0, start_date: '', end_date: ''}
         if(active_page == 'grid'){
             members.push(member)
             return createMemberCard([member])
@@ -132,10 +132,11 @@ window.onload = function loadPage(){
             {description: 'Name', data: 'name'},
             {description: 'Active?', data: 'active', selection: {type: 'list', data: [true, false]}},
             {description: 'Balance', data: 'balance'},
-            {description: 'Charges', data: 'charges'}
+            {description: 'Charges', data: 'charges'},
+            {description: 'Membership Start Date', data: 'start_date', date: { type: 'date'}},
+            {description: 'Membership End Date', data: 'end_date', date: { type: 'date'}}
             // {data: 'matched', selection: {type: 'list', data: coding}},
         ]
-    
         inputpage.initialise(members, headers, $('#content-section'), index, loadPage)
         inputpage.create(members, headers)
     }

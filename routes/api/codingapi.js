@@ -13,7 +13,7 @@ module.exports = function(router, url){
             var dbo = db.db("Social_Clubs_v1");
             dbo.collection("Coding")
                 .find({tenant_id: req.user.tenant_id})
-                .limit(Number(req.query.limit))
+                // .limit(Number(req.query.limit))
                 .toArray(function(err, result){
                 res.send(result);
             });

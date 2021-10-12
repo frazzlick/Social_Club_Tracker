@@ -63,7 +63,6 @@ window.onload = function loadPaymentsScreen(){
         let navbutton = document.getElementById('btn-processing')
         navbutton.addEventListener('click', function(e){
             removeElements(document.getElementById('grid'))
-            console.log(DataTable.data[0])
             ProcessingPageLoad(DataTable.data[0])
         })
     }

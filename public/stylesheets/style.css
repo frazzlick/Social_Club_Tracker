@@ -303,7 +303,7 @@ body {
 
 .content-card-name{
   height: 100%;
-  width: 100px;
+  width: 150px;
   margin-left: 50px;
   float: left;
   display: grid;
@@ -499,6 +499,33 @@ body {
   background-color: var(--lightest-colour);
   border: none;
   /* color: white; */
+}
+
+.table-footer{
+  margin-left: 25px;
+  width: 100%;
+}
+
+.table-footer-btn{
+  padding: 10px;
+  border: thin 1px black;
+  float: left;
+}
+
+.table-footer-pagination{
+  float: right;
+  width: 50%;
+  font-size: large;
+}
+
+.table_style tr button{
+  float: left;
+  background-color:var(--light-colour);
+  color: white;
+  cursor: pointer;
+  width: 20px;
+  border: none;
+  outline: none;
 }
 
 
