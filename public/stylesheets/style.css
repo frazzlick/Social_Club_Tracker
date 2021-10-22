@@ -528,6 +528,11 @@ body {
   outline: none;
 }
 
+.table_style tr td {
+  
+  /* border: 1px black solid; */
+}
+
 
 
 

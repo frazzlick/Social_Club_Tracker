@@ -96,7 +96,7 @@ var DataTable = {
                 td.id = ''
             }
             DataTable.row_EventListener_click(html_row)
-            if(data.indexOf(row) >= this.rowlimit){
+            if(data.indexOf(row) >= this.rowlimit - 1){
                 return
             }
         }

@@ -12,6 +12,7 @@ module.exports = function(router, url){
             var dbo = db.db("Social_Clubs_v1");
             dbo.collection("Members")
                 .find({tenant_id: req.user.tenant_id})
+                .sort({name: 1})
                 .toArray(function(err, result){
                 res.send(result);
             });

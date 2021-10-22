@@ -14,14 +14,6 @@ window.onload = function loadSettingsPage(){
         settings_Users()
     })    
 
-    let sidebar_Coding = document.getElementById('btn-settings')
-    sidebar_Coding.addEventListener('click', function(e){
-        removeElements(document.getElementById('grid'));
-        document.getElementById('brand-title').innerHTML = 'Coding'
-        document.getElementById('title').innerHTML = 'Social Clubs | Coding'
-        CodingPageLoad()
-    })
-
     let sidebar_Banking = document.getElementById('btn-banking')
     sidebar_Banking.addEventListener('click', function(e){
         removeElements(document.getElementById('grid'));

@@ -16,6 +16,10 @@ module.exports = function(router, checkAuthenticated){
     res.render('subscriptions.html');
   })
 
+  router.get('/reporting', checkAuthenticated,(req, res) => {
+    res.render('reporting.html');
+  })
+
   router.get('/settings', checkAuthenticated,(req, res) => {
     res.render('settings.html');
   })

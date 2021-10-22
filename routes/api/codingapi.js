@@ -21,15 +21,16 @@ module.exports = function(router, url){
     })
 
     router.post('/api/coding', async function(req, res, next){
+        console.log(req.body)
         MongoClient.connect(url, function(err, db){
             for(let i = 0; i < req.body.length; i++){
                 var dbo = db.db("Social_Clubs_v1");
                 dbo.collection('Coding').updateMany({ '_id' : new ObjectId(req.body[i]._id)},
                 {$set : {tenant_id: req.user.tenant_id,
                     id : req.body[i].id, 
-                    Description : req.body[i].Description,
-                    Parent: req.body[i].Parent,
-                    Active: req.body[i].Active
+                    description : req.body[i].description,
+                    level: req.body[i].level,
+                    children: req.body[i].children
                 }},
                 {upsert: true})
             }

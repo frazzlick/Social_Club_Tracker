@@ -14,6 +14,7 @@ module.exports = function(router, url){
             dbo.collection("Subscriptions")
                 .find({tenant_id: req.user.tenant_id},
                     req.query.find)
+                .sort({start_date: -1})
                 .project({tenant_id: 0})
                 .toArray(function(err, result){
                 res.send(result);
